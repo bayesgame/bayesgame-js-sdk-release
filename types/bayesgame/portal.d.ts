@@ -124,13 +124,6 @@ export declare class Portal extends BaseContract {
      */
     getFormatCodes(_start: BigNumberish, _end: BigNumberish): Promise<any>;
     /**
-     * @notice Decodes an encoded lottery code into an array of keys.
-     * @dev Useful for displaying the keys to end users.
-     * @param _code The encoded lottery code
-     * @return An array of keys represented by bytes
-     */
-    decodeCode(_code: BigNumberish): Promise<any>;
-    /**
      * @notice Gets the balance of the specified token or ETH within the contract.
      * @dev If checking for ETH, supply the zero address.
      * @param _token The address of the token contract (zero address for ETH)

@@ -54286,9 +54286,9 @@
 	const defaultConf = {
 	  id: 5,
 	  rpcUrl: CHAIN_RPC[5],
-	  Portal: '0xF33AC405BBF005d07D1b080da62Bebb9e5C6Aa46',
-	  LottoNumbers: '0x1f1334060823d6943737040640E9B99Ae6Af1e90',
-	  Ticket: '0xD81f8faFc8522F93D5314442201D1FC78b0051ca'
+	  Portal: '0xe52aE0aaaB417D3a80526BE0A3D347ED46002183',
+	  LottoNumbers: '0x643b2700A519b87ED21Fe62D4989e451C351B588',
+	  Ticket: '0x809D51A620E6899540dfbc3D3826Fb5A878e24F8'
 	};
 	const getNetworkMeta = network => {
 	  switch (network) {
@@ -54710,25 +54710,6 @@
 		},
 		{
 			inputs: [
-				{
-					internalType: "uint256",
-					name: "code",
-					type: "uint256"
-				}
-			],
-			name: "decodeCode",
-			outputs: [
-				{
-					internalType: "uint8[]",
-					name: "",
-					type: "uint8[]"
-				}
-			],
-			stateMutability: "pure",
-			type: "function"
-		},
-		{
-			inputs: [
 			],
 			name: "dev",
 			outputs: [
@@ -54790,21 +54771,9 @@
 			name: "getCodes",
 			outputs: [
 				{
-					components: [
-						{
-							internalType: "uint256",
-							name: "code",
-							type: "uint256"
-						},
-						{
-							internalType: "uint256",
-							name: "blockNumber",
-							type: "uint256"
-						}
-					],
-					internalType: "struct Portal.RoundData[]",
+					internalType: "uint256[]",
 					name: "result",
-					type: "tuple[]"
+					type: "uint256[]"
 				},
 				{
 					internalType: "uint256",
@@ -55334,12 +55303,7 @@
 			outputs: [
 				{
 					internalType: "uint256",
-					name: "code",
-					type: "uint256"
-				},
-				{
-					internalType: "uint256",
-					name: "blockNumber",
+					name: "",
 					type: "uint256"
 				}
 			],
@@ -55886,15 +55850,6 @@
 	    return await this.contract.getFormatCodes(_start, _end);
 	  }
 	  /**
-	   * @notice Decodes an encoded lottery code into an array of keys.
-	   * @dev Useful for displaying the keys to end users.
-	   * @param _code The encoded lottery code
-	   * @return An array of keys represented by bytes
-	   */
-	  async decodeCode(_code) {
-	    return await this.contract.decodeCode(_code);
-	  }
-	  /**
 	   * @notice Gets the balance of the specified token or ETH within the contract.
 	   * @dev If checking for ETH, supply the zero address.
 	   * @param _token The address of the token contract (zero address for ETH)
@@ -56208,6 +56163,30 @@
 		{
 			inputs: [
 				{
+					internalType: "address",
+					name: "from",
+					type: "address"
+				},
+				{
+					internalType: "address",
+					name: "to",
+					type: "address"
+				}
+			],
+			name: "checkTransfer",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
 					internalType: "uint256",
 					name: "",
 					type: "uint256"
@@ -56320,8 +56299,13 @@
 			name: "getFormatCode",
 			outputs: [
 				{
+					internalType: "uint128",
+					name: "blockNumber",
+					type: "uint128"
+				},
+				{
 					internalType: "uint8[]",
-					name: "result",
+					name: "numbers",
 					type: "uint8[]"
 				}
 			],
@@ -56339,9 +56323,21 @@
 			name: "getFormatCodes",
 			outputs: [
 				{
-					internalType: "uint8[][]",
+					components: [
+						{
+							internalType: "uint128",
+							name: "blockNumber",
+							type: "uint128"
+						},
+						{
+							internalType: "uint8[]",
+							name: "numbers",
+							type: "uint8[]"
+						}
+					],
+					internalType: "struct Ticket.TicketFormatData[]",
 					name: "result",
-					type: "uint8[][]"
+					type: "tuple[]"
 				}
 			],
 			stateMutability: "view",
@@ -56412,16 +56408,21 @@
 					type: "address"
 				},
 				{
-					internalType: "uint256",
-					name: "_code",
-					type: "uint256"
+					internalType: "uint8[]",
+					name: "_keys",
+					type: "uint8[]"
 				}
 			],
 			name: "mint",
 			outputs: [
 				{
 					internalType: "uint256",
-					name: "",
+					name: "tokenId",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "code",
 					type: "uint256"
 				}
 			],
@@ -56511,7 +56512,7 @@
 			outputs: [
 				{
 					internalType: "uint256[]",
-					name: "values",
+					name: "tokens",
 					type: "uint256[]"
 				},
 				{
@@ -56628,6 +56629,20 @@
 				}
 			],
 			name: "setURI",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address[]",
+					name: "_whiteList",
+					type: "address[]"
+				}
+			],
+			name: "setWhiteList",
 			outputs: [
 			],
 			stateMutability: "nonpayable",
@@ -56779,6 +56794,25 @@
 			],
 			stateMutability: "nonpayable",
 			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "whiteList",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
 		}
 	];
 
@@ -56789,27 +56823,51 @@
 	    this.contract = this.contract;
 	    this.networkMeta = networkMeta;
 	  }
-	  mint(_sn, _expired, _signature) {
-	    let value = lib$v.BigNumber.from(0);
-	    const payableOverrides = {
-	      value
-	    };
-	    return getTransactionMethods(this.contract, 'mint', [_sn, _expired, _signature, payableOverrides]);
+	  // Checks if the transfer is allowed, false otherwise
+	  async checkTransfer(_from, _to) {
+	    return await this.contract.checkTransfer(_from, _to);
 	  }
 	  async exists(_tokenId) {
 	    return await this.contract.exists(_tokenId);
 	  }
+	  /**
+	   * @notice Decodes and retrieves the block number and a sequence of numbers for a specific token ID
+	   * @dev The `code` associated with the token ID is decoded into a uint128 value representing the block number at minting time, and a uint8 array of additional numbers.
+	   * @param _tokenId The token ID to retrieve the decoded data for
+	   * @return blockNumber The block number encoded into the token's code at the time of minting
+	   * @return numbers An array of uint8 representing additional numbers encoded in the token's code
+	   */
 	  async getFormatCode(_tokenId) {
 	    return await this.contract.getFormatCode(_tokenId);
 	  }
+	  /**
+	   * @notice Decodes and retrieves the block numbers and sequences of numbers for multiple token IDs
+	   * @dev Similar to `getFormatCode`, but for multiple tokens. This function decodes each token's code into its component parts.
+	   * @param _tokenIds An array of token IDs to retrieve the decoded data for
+	   * @return result An array of `TicketFormatData` structs, each containing a block number and an array of numbers corresponding to each token ID
+	   */
 	  async getFormatCodes(_tokenIds) {
 	    return await this.contract.getFormatCodes(_tokenIds);
 	  }
+	  /**
+	   * @notice Retrieves the tokens owned by a specific account
+	   * @dev Iterates through the tokens that belong to an account address
+	   * @param _account The address to query the tokens of
+	   * @return A uint256 array containing token IDs owned by the passed account
+	   */
 	  async getUserTokens(_user) {
 	    const res = await this.contract.getTokens(_user);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
+	  /**
+	   * @notice Retrieves a paginated list of tokens owned by a specific account
+	   * @dev Provides a way to paginate through the tokens of an owner to avoid high gas costs
+	   * @param _user The address to query the tokens of
+	   * @param _cursor The index of the first token to start retrieving from
+	   * @param _size The number of tokens to retrieve in this batch
+	   * @return A tuple containing an array of token IDs, the next cursor position, and the total count of tokens
+	   */
 	  async pageUserTokens(_user, _cursor, _size) {
 	    const res = await this.contract.pageTokens(_user, _cursor, _size);
 	    const data = res.map(d => d.toString());
@@ -57158,6 +57216,30 @@
 		},
 		{
 			inputs: [
+				{
+					internalType: "address",
+					name: "from",
+					type: "address"
+				},
+				{
+					internalType: "address",
+					name: "to",
+					type: "address"
+				}
+			],
+			name: "checkTransfer",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
 			],
 			name: "config",
 			outputs: [
@@ -57487,6 +57569,20 @@
 		{
 			inputs: [
 				{
+					internalType: "address[]",
+					name: "_whiteList",
+					type: "address[]"
+				}
+			],
+			name: "setWhiteList",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
 					internalType: "address",
 					name: "_config",
 					type: "address"
@@ -57564,6 +57660,25 @@
 					internalType: "string",
 					name: "",
 					type: "string"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "whiteList",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
 				}
 			],
 			stateMutability: "view",
