@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("./_commonjsHelpers.js"),n=require("../node_modules/.pnpm/@walletconnect_encoding@1.0.2/node_modules/@walletconnect/encoding/dist/esm/index.js"),o=e.getAugmentedNamespace(n);exports.default=o;

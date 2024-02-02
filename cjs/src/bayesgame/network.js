@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const e={id:5,rpcUrl:require("../constants.js").CHAIN_RPC[5],Portal:"0xF33AC405BBF005d07D1b080da62Bebb9e5C6Aa46",LottoNumbers:"0x1f1334060823d6943737040640E9B99Ae6Af1e90",Ticket:"0xD81f8faFc8522F93D5314442201D1FC78b0051ca"};exports.getNetworkMeta=t=>e;

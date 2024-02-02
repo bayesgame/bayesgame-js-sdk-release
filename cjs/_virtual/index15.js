@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("./_commonjsHelpers.js"),r=require("../node_modules/.pnpm/detect-browser@5.2.0/node_modules/detect-browser/es/index.js"),s=e.getAugmentedNamespace(r);exports.default=s;

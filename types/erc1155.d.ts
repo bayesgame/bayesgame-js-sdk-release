@@ -1,0 +1,30 @@
+import type { ERC1155 as ERC1155Contract } from './common/typechain/ERC1155';
+import type { TransactionMethods, ContractMethodReturnType, TypedTokenInfo } from './common/types';
+import { Chain } from './chain';
+import { BaseContract } from './contract';
+export declare class ERC1155 extends BaseContract {
+    constructor(chain: Chain, contractAddress: string, abi?: any);
+    safeTransferFrom(from: string, to: string, id: number | string, amount: number | string, data: string): TransactionMethods<ContractMethodReturnType<ERC1155Contract, 'safeTransferFrom'>>;
+    safeBatchTransferFrom(from: string, to: string, ids: number[] | string[], amounts: number[] | string[], data: string): TransactionMethods<ContractMethodReturnType<ERC1155Contract, 'safeBatchTransferFrom'>>;
+    setApprovalForAll(operator: string, approved: boolean): TransactionMethods<ContractMethodReturnType<ERC1155Contract, 'setApprovalForAll'>>;
+    name(): Promise<string>;
+    symbol(): Promise<string>;
+    info(): Promise<TypedTokenInfo>;
+    balanceOf(account: string, id: number | string): Promise<string>;
+    balanceOfBatch(accounts: string[], ids: number[] | string[]): Promise<string[]>;
+    tokenURI(tokenId: number | string): Promise<string>;
+    uri(tokenId: number | string): Promise<string>;
+    ownerOf(tokenId: number | string): Promise<string>;
+    private _info;
+    setApprovalForAllEncodeFunction(operator: string, approved: boolean): import("./common/types").TypedFunctionData;
+    safeTransferFromEncodeFunction(from: string, to: string, id: number | string, amount: number | string, data: string): import("./common/types").TypedFunctionData;
+    safeBatchTransferFromEncodeFunction(from: string, to: string, ids: number[] | string[], amounts: number[] | string[], data: string): import("./common/types").TypedFunctionData;
+    ownerOfEncodeFunction(tokenId: number | string): string;
+    balanceOfEncodeFunction(account: string, id: number | string): any;
+    balanceOfBatchEncodeFunction(accounts: string[], ids: number[] | string[]): any;
+    isApprovedForAllEncodeFunction(owner: string, operator: string): any;
+    getTransferSingleEvent(fromBlock: string | number, toBlock?: string | number): Promise<any>;
+    getTransferBatchEvent(fromBlock: string | number, toBlock?: string | number): Promise<any>;
+    isApprovedForAll(owner: string, operator: string): Promise<boolean>;
+}
+export declare function getERC1155(chain: Chain, address: string): ERC1155;
