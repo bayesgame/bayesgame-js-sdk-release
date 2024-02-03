@@ -55623,6 +55623,7 @@
 	  res.compact = res.r + res.s.substring(2) + lib$v.ethers.utils.hexValue(res.v).substring(2);
 	  res.messageHash = hash;
 	  res.domainHash = '0x0000000000000000000000000000000000000000000000000000000000000000';
+	  console.debug('signData res:', res);
 	  return res;
 	};
 	const signTypedData = async (signer, types, values, domain) => {
@@ -57693,31 +57694,37 @@
 	    this.contract = this.contract;
 	    this.networkMeta = networkMeta;
 	  }
-	  mint(_sn, _expired, _signature) {
-	    let value = lib$v.BigNumber.from(0);
-	    const payableOverrides = {
-	      value
-	    };
-	    return getTransactionMethods(this.contract, 'mint', [_sn, _expired, _signature, payableOverrides]);
-	  }
-	  async exists(_tokenId) {
-	    return await this.contract.exists(_tokenId);
-	  }
-	  async getFormatCode(_tokenId) {
-	    return await this.contract.getFormatCode(_tokenId);
-	  }
-	  async getFormatCodes(_tokenIds) {
-	    return await this.contract.getFormatCodes(_tokenIds);
-	  }
+	  /**
+	   * @notice Retrieves the balances of all possible token types for a given account.
+	   * @dev The function creates an array representing all token IDs from 1 to maxId.
+	   * It then queries the balance of each token ID for the specified account and
+	   * stores it in the corresponding position of the array. This provides a complete
+	   * snapshot of the user's holdings across all token types managed by the contract.
+	   * @param _account The address of the user whose token balances are to be retrieved.
+	   * @return tokens An array where the index corresponds to the token ID (starting from 1)
+	   * and the value at each index is the balance of that token ID for the given account.
+	   */
 	  async getUserTokens(_user) {
 	    const res = await this.contract.getTokens(_user);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
-	  async pageUserTokens(_user, _cursor, _size) {
-	    const res = await this.contract.pageTokens(_user, _cursor, _size);
+	  /**
+	   * @notice Retrieves the total supply of all token types managed by the contract.
+	   * @dev This function iterates over all possible token IDs from 1 to maxId and
+	   * queries the total supply of each. It stores these values in an array,
+	   * providing a complete overview of the number of each token type that exists.
+	   * @return tokens An array indexed by token ID where each value is the total supply
+	   * of that token ID. The index starts from 1 and goes up to maxId inclusive.
+	   */
+	  async getTotalSupplies() {
+	    const res = await this.contract.getTotalSupplies();
 	    const data = res.map(d => d.toString());
 	    return data;
+	  }
+	  async totalSupply(_id) {
+	    const res = await this.contract.totalSupply(_id);
+	    return res.toString();
 	  }
 	  setSigner(_signer) {
 	    this.signer = _signer;
