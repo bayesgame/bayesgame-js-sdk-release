@@ -38,7 +38,7 @@ export declare class Portal extends BaseContract {
      * @param _expired Timestamp until when the minting request is valid
      * @param _signature Signature provided for verification
      */
-    mintKeys(_amount: BigNumberish, _randoms: BigNumberish[], _sn: BytesLike[], _expired: BigNumberish, _signature: BytesLike): TransactionMethods<ContractMethodReturnType<PortalContract, 'mintKeys'>>;
+    mintKeys(_amount: BigNumberish, _randoms: BigNumberish[], _sn: BytesLike, _expired: BigNumberish, _signature: BytesLike): TransactionMethods<ContractMethodReturnType<PortalContract, 'mintKeys'>>;
     /**
      * @notice Creates a ticket from a set of keys.
      * @dev Burns the corresponding lotto numbers and mints a ticket token for the sender.
@@ -65,15 +65,31 @@ export declare class Portal extends BaseContract {
      * @param _tokenIds An array of ticket IDs
      */
     batchClaimBonuses(_rounds: BigNumberish[], _tokenIds: BigNumberish[]): TransactionMethods<ContractMethodReturnType<PortalContract, 'batchClaimBonuses'>>;
+    /**
+     * Retrieves the user's relationships from the contract or defaults to the connected account.
+     * @param user Optional. The address of the user to retrieve relationships for. If not provided, defaults to the connected account.
+     * @returns A Promise that resolves with the relationships data from the contract.
+     */
     relationships(user?: string): Promise<any>;
+    /**
+     * Gets the size of a key from the lottery.
+     */
     keySize(): Promise<any>;
+    /**
+     * Fetches the price of a key.
+     */
     keyPrice(): Promise<any>;
+    /**
+     * Retrieves the rate of bonuses for an inviter.
+     */
     inviterBonusesRate(): Promise<any>;
+    /**
+     * Obtains the prize rates.
+     */
     getPrizeRates(): Promise<number[]>;
     /**
-     * @notice Checks whether a specific round has expired based on block numbers.
-     * @param _round The round number to check
-     * @return True if the round is still valid, false if it has expired
+     * Checks whether a specific round has expired based on block numbers.
+     * @param _round The round number to check.
      */
     checkRound(_round: BigNumberish): Promise<any>;
     /**

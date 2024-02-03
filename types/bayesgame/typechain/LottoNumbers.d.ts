@@ -16,6 +16,7 @@ interface LottoNumbersInterface extends ethers.utils.Interface {
         'config()': FunctionFragment;
         'dev()': FunctionFragment;
         'exists(uint256)': FunctionFragment;
+        'getTotalSupplies()': FunctionFragment;
         'getUserTokens(address)': FunctionFragment;
         'isApprovedForAll(address,address)': FunctionFragment;
         'maxId()': FunctionFragment;
@@ -49,6 +50,7 @@ interface LottoNumbersInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'config', values?: undefined): string;
     encodeFunctionData(functionFragment: 'dev', values?: undefined): string;
     encodeFunctionData(functionFragment: 'exists', values: [BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'getTotalSupplies', values?: undefined): string;
     encodeFunctionData(functionFragment: 'getUserTokens', values: [string]): string;
     encodeFunctionData(functionFragment: 'isApprovedForAll', values: [string, string]): string;
     encodeFunctionData(functionFragment: 'maxId', values?: undefined): string;
@@ -81,6 +83,7 @@ interface LottoNumbersInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'config', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'dev', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'exists', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'getTotalSupplies', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getUserTokens', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'isApprovedForAll', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'maxId', data: BytesLike): Result;
@@ -174,6 +177,8 @@ export interface LottoNumbers extends Contract {
         'dev()'(overrides?: CallOverrides): Promise<[string]>;
         exists(id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
         'exists(uint256)'(id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
+        getTotalSupplies(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+        'getTotalSupplies()'(overrides?: CallOverrides): Promise<[BigNumber[]]>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<[BigNumber[]]>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<[BigNumber[]]>;
         isApprovedForAll(account: string, operator: string, overrides?: CallOverrides): Promise<[boolean]>;
@@ -295,6 +300,8 @@ export interface LottoNumbers extends Contract {
     'dev()'(overrides?: CallOverrides): Promise<string>;
     exists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
     'exists(uint256)'(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+    getTotalSupplies(overrides?: CallOverrides): Promise<BigNumber[]>;
+    'getTotalSupplies()'(overrides?: CallOverrides): Promise<BigNumber[]>;
     getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
     'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
     isApprovedForAll(account: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
@@ -400,6 +407,8 @@ export interface LottoNumbers extends Contract {
         'dev()'(overrides?: CallOverrides): Promise<string>;
         exists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         'exists(uint256)'(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+        getTotalSupplies(overrides?: CallOverrides): Promise<BigNumber[]>;
+        'getTotalSupplies()'(overrides?: CallOverrides): Promise<BigNumber[]>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
         isApprovedForAll(account: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
@@ -529,6 +538,8 @@ export interface LottoNumbers extends Contract {
         'dev()'(overrides?: CallOverrides): Promise<BigNumber>;
         exists(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'exists(uint256)'(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        getTotalSupplies(overrides?: CallOverrides): Promise<BigNumber>;
+        'getTotalSupplies()'(overrides?: CallOverrides): Promise<BigNumber>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber>;
         isApprovedForAll(account: string, operator: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -651,6 +662,8 @@ export interface LottoNumbers extends Contract {
         'dev()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         exists(id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'exists(uint256)'(id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        getTotalSupplies(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'getTotalSupplies()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         isApprovedForAll(account: string, operator: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;

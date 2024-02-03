@@ -179,7 +179,7 @@ interface PortalInterface extends ethers.utils.Interface {
         'ConfigChanged(address,address,address)': EventFragment;
         'KeyPriceLog(uint256,uint256)': EventFragment;
         'LotteryLog(address,uint256,uint256)': EventFragment;
-        'MakeTicketLog(address,uint256,uint256)': EventFragment;
+        'MakeTicketLog(address,uint256)': EventFragment;
         'MintKeyLog(bytes32,address,uint8[])': EventFragment;
         'OwnerChanged(address,address,address)': EventFragment;
         'RegisterLog(bytes32,address,address)': EventFragment;
@@ -953,10 +953,9 @@ export interface Portal extends Contract {
             round: BigNumber;
             code: BigNumber;
         }>;
-        MakeTicketLog(user: string | null, tokenId: BigNumberish | null, code: null): TypedEventFilter<[string, BigNumber, BigNumber], {
+        MakeTicketLog(user: string | null, tokenId: BigNumberish | null): TypedEventFilter<[string, BigNumber], {
             user: string;
             tokenId: BigNumber;
-            code: BigNumber;
         }>;
         MintKeyLog(sn: BytesLike | null, user: string | null, numbers: null): TypedEventFilter<[string, string, number[]], {
             sn: string;

@@ -54286,9 +54286,9 @@
 	const defaultConf = {
 	  id: 5,
 	  rpcUrl: CHAIN_RPC[5],
-	  Portal: '0xe52aE0aaaB417D3a80526BE0A3D347ED46002183',
-	  LottoNumbers: '0x643b2700A519b87ED21Fe62D4989e451C351B588',
-	  Ticket: '0x809D51A620E6899540dfbc3D3826Fb5A878e24F8'
+	  Portal: '0xC6AC7cb817541391D4F70EBC9C68EeE7296D84f9',
+	  LottoNumbers: '0x04782f5dA49d94A13f30f167aa130124E69a9e82',
+	  Ticket: '0xa90ACF386C762286568E423a52C1326321d3Fd85'
 	};
 	const getNetworkMeta = network => {
 	  switch (network) {
@@ -54443,12 +54443,6 @@
 					indexed: true,
 					internalType: "uint256",
 					name: "tokenId",
-					type: "uint256"
-				},
-				{
-					indexed: false,
-					internalType: "uint256",
-					name: "code",
 					type: "uint256"
 				}
 			],
@@ -55764,29 +55758,45 @@
 	  batchClaimBonuses(_rounds, _tokenIds) {
 	    return getTransactionMethods(this.contract, 'batchClaimBonuses', [_rounds, _tokenIds]);
 	  }
+	  /**
+	   * Retrieves the user's relationships from the contract or defaults to the connected account.
+	   * @param user Optional. The address of the user to retrieve relationships for. If not provided, defaults to the connected account.
+	   * @returns A Promise that resolves with the relationships data from the contract.
+	   */
 	  async relationships(user) {
 	    if (!user) user = await this.chain.getAccount();
 	    return await this.contract.relationships(user);
 	  }
+	  /**
+	   * Gets the size of a key from the lottery.
+	   */
 	  async keySize() {
 	    return await this.contract.keySize();
 	  }
+	  /**
+	   * Fetches the price of a key.
+	   */
 	  async keyPrice() {
 	    return await this.contract.keyPrice();
 	  }
+	  /**
+	   * Retrieves the rate of bonuses for an inviter.
+	   */
 	  async inviterBonusesRate() {
 	    const rate = await this.contract.inviterBonusesRate();
 	    return rate.div(10000).toNumber();
 	  }
+	  /**
+	   * Obtains the prize rates.
+	   */
 	  async getPrizeRates() {
 	    const data = await this.contract.getPrizeRates();
 	    const res = data.map(d => d.toNumber() / 10000);
 	    return res;
 	  }
 	  /**
-	   * @notice Checks whether a specific round has expired based on block numbers.
-	   * @param _round The round number to check
-	   * @return True if the round is still valid, false if it has expired
+	   * Checks whether a specific round has expired based on block numbers.
+	   * @param _round The round number to check.
 	   */
 	  async checkRound(_round) {
 	    return await this.contract.checkRound(_round);
@@ -56187,25 +56197,6 @@
 		},
 		{
 			inputs: [
-				{
-					internalType: "uint256",
-					name: "",
-					type: "uint256"
-				}
-			],
-			name: "codes",
-			outputs: [
-				{
-					internalType: "uint256",
-					name: "",
-					type: "uint256"
-				}
-			],
-			stateMutability: "view",
-			type: "function"
-		},
-		{
-			inputs: [
 			],
 			name: "config",
 			outputs: [
@@ -56216,6 +56207,71 @@
 				}
 			],
 			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				}
+			],
+			name: "decode",
+			outputs: [
+				{
+					internalType: "uint64",
+					name: "sn",
+					type: "uint64"
+				},
+				{
+					internalType: "uint128",
+					name: "blockNumber",
+					type: "uint128"
+				},
+				{
+					internalType: "uint8[]",
+					name: "numbers",
+					type: "uint8[]"
+				}
+			],
+			stateMutability: "pure",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256[]",
+					name: "_tokenIds",
+					type: "uint256[]"
+				}
+			],
+			name: "decodeBatch",
+			outputs: [
+				{
+					components: [
+						{
+							internalType: "uint64",
+							name: "sn",
+							type: "uint64"
+						},
+						{
+							internalType: "uint128",
+							name: "blockNumber",
+							type: "uint128"
+						},
+						{
+							internalType: "uint8[]",
+							name: "numbers",
+							type: "uint8[]"
+						}
+					],
+					internalType: "struct Ticket.TicketData[]",
+					name: "result",
+					type: "tuple[]"
+				}
+			],
+			stateMutability: "pure",
 			type: "function"
 		},
 		{
@@ -56265,80 +56321,6 @@
 					internalType: "address",
 					name: "",
 					type: "address"
-				}
-			],
-			stateMutability: "view",
-			type: "function"
-		},
-		{
-			inputs: [
-				{
-					internalType: "uint256[]",
-					name: "_tokenIds",
-					type: "uint256[]"
-				}
-			],
-			name: "getCodes",
-			outputs: [
-				{
-					internalType: "uint256[]",
-					name: "result",
-					type: "uint256[]"
-				}
-			],
-			stateMutability: "view",
-			type: "function"
-		},
-		{
-			inputs: [
-				{
-					internalType: "uint256",
-					name: "_tokenId",
-					type: "uint256"
-				}
-			],
-			name: "getFormatCode",
-			outputs: [
-				{
-					internalType: "uint128",
-					name: "blockNumber",
-					type: "uint128"
-				},
-				{
-					internalType: "uint8[]",
-					name: "numbers",
-					type: "uint8[]"
-				}
-			],
-			stateMutability: "view",
-			type: "function"
-		},
-		{
-			inputs: [
-				{
-					internalType: "uint256[]",
-					name: "_tokenIds",
-					type: "uint256[]"
-				}
-			],
-			name: "getFormatCodes",
-			outputs: [
-				{
-					components: [
-						{
-							internalType: "uint128",
-							name: "blockNumber",
-							type: "uint128"
-						},
-						{
-							internalType: "uint8[]",
-							name: "numbers",
-							type: "uint8[]"
-						}
-					],
-					internalType: "struct Ticket.TicketFormatData[]",
-					name: "result",
-					type: "tuple[]"
 				}
 			],
 			stateMutability: "view",
@@ -56418,12 +56400,7 @@
 			outputs: [
 				{
 					internalType: "uint256",
-					name: "tokenId",
-					type: "uint256"
-				},
-				{
-					internalType: "uint256",
-					name: "code",
+					name: "",
 					type: "uint256"
 				}
 			],
@@ -56436,9 +56413,9 @@
 			name: "mintTotal",
 			outputs: [
 				{
-					internalType: "uint256",
+					internalType: "uint64",
 					name: "",
-					type: "uint256"
+					type: "uint64"
 				}
 			],
 			stateMutability: "view",
@@ -56519,6 +56496,45 @@
 				{
 					internalType: "uint256",
 					name: "cursor",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "count",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "_cursor",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "_size",
+					type: "uint256"
+				}
+			],
+			name: "pageUserTokensReverse",
+			outputs: [
+				{
+					internalType: "uint256[]",
+					name: "tokens",
+					type: "uint256[]"
+				},
+				{
+					internalType: "uint256",
+					name: "newCursor",
 					type: "uint256"
 				},
 				{
@@ -56832,23 +56848,22 @@
 	    return await this.contract.exists(_tokenId);
 	  }
 	  /**
-	   * @notice Decodes and retrieves the block number and a sequence of numbers for a specific token ID
-	   * @dev The `code` associated with the token ID is decoded into a uint128 value representing the block number at minting time, and a uint8 array of additional numbers.
+	   * @notice Decodes and retrieves the serial number, the block number and a sequence of numbers for a specific token ID
 	   * @param _tokenId The token ID to retrieve the decoded data for
-	   * @return blockNumber The block number encoded into the token's code at the time of minting
-	   * @return numbers An array of uint8 representing additional numbers encoded in the token's code
+	   * @return sn the Serial number encoded into the tokenId
+	   * @return blockNumber The block number encoded into the tokenId at the time of minting
+	   * @return numbers An array of uint8 representing additional numbers encoded in the tokenId
 	   */
-	  async getFormatCode(_tokenId) {
-	    return await this.contract.getFormatCode(_tokenId);
+	  async decode(_tokenId) {
+	    return await this.contract.decode(_tokenId);
 	  }
 	  /**
-	   * @notice Decodes and retrieves the block numbers and sequences of numbers for multiple token IDs
-	   * @dev Similar to `getFormatCode`, but for multiple tokens. This function decodes each token's code into its component parts.
+	   * @notice Decodes and retrieves the serial numbers, the block numbers and sequences of numbers for multiple token IDs
 	   * @param _tokenIds An array of token IDs to retrieve the decoded data for
-	   * @return result An array of `TicketFormatData` structs, each containing a block number and an array of numbers corresponding to each token ID
+	   * @return result An array of `TicketData` structs, each containing a serial number, a block number and an array of numbers corresponding to each token ID
 	   */
-	  async getFormatCodes(_tokenIds) {
-	    return await this.contract.getFormatCodes(_tokenIds);
+	  async decodeBatch(_tokenIds) {
+	    return await this.contract.decodeBatch(_tokenIds);
 	  }
 	  /**
 	   * @notice Retrieves the tokens owned by a specific account
@@ -56870,6 +56885,20 @@
 	   * @return A tuple containing an array of token IDs, the next cursor position, and the total count of tokens
 	   */
 	  async pageUserTokens(_user, _cursor, _size) {
+	    const res = await this.contract.pageTokens(_user, _cursor, _size);
+	    const data = res.map(d => d.toString());
+	    return data;
+	  }
+	  /**
+	   * @notice Retrieves a paginated list of tokens owned by a specific account in reverse order
+	   * @dev Provides a way to paginate through the tokens of an owner backwards to avoid high gas costs.
+	   * The `_cursor` should be set to `balanceOf(_user)` for the initial call and will be decremented with each call.
+	   * @param _user The address to query the tokens of
+	   * @param _cursor The end index for paging, exclusive. Use `balanceOf(_user)` for the initial call.
+	   * @param _size The number of tokens to retrieve in this batch
+	   * @return A tuple containing an array of token IDs, the next cursor position, and the total count of tokens
+	   */
+	  async pageUserTokensReverse(_user, _cursor, _size) {
 	    const res = await this.contract.pageTokens(_user, _cursor, _size);
 	    const data = res.map(d => d.toString());
 	    return data;
@@ -57281,6 +57310,20 @@
 					internalType: "bool",
 					name: "",
 					type: "bool"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "getTotalSupplies",
+			outputs: [
+				{
+					internalType: "uint256[]",
+					name: "",
+					type: "uint256[]"
 				}
 			],
 			stateMutability: "view",
@@ -57722,6 +57765,7 @@
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
+	  // Query the total supply for token Id
 	  async totalSupply(_id) {
 	    const res = await this.contract.totalSupply(_id);
 	    return res.toString();

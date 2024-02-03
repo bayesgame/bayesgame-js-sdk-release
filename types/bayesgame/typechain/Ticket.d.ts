@@ -12,14 +12,12 @@ interface TicketInterface extends ethers.utils.Interface {
         'burn(uint256)': FunctionFragment;
         'changeOwner(address)': FunctionFragment;
         'checkTransfer(address,address)': FunctionFragment;
-        'codes(uint256)': FunctionFragment;
         'config()': FunctionFragment;
+        'decode(uint256)': FunctionFragment;
+        'decodeBatch(uint256[])': FunctionFragment;
         'dev()': FunctionFragment;
         'exists(uint256)': FunctionFragment;
         'getApproved(uint256)': FunctionFragment;
-        'getCodes(uint256[])': FunctionFragment;
-        'getFormatCode(uint256)': FunctionFragment;
-        'getFormatCodes(uint256[])': FunctionFragment;
         'getUserTokens(address)': FunctionFragment;
         'isApprovedForAll(address,address)': FunctionFragment;
         'miner()': FunctionFragment;
@@ -29,6 +27,7 @@ interface TicketInterface extends ethers.utils.Interface {
         'owner()': FunctionFragment;
         'ownerOf(uint256)': FunctionFragment;
         'pageUserTokens(address,uint256,uint256)': FunctionFragment;
+        'pageUserTokensReverse(address,uint256,uint256)': FunctionFragment;
         'safeTransferFrom(address,address,uint256)': FunctionFragment;
         'setApprovalForAll(address,bool)': FunctionFragment;
         'setMiner(address)': FunctionFragment;
@@ -51,14 +50,12 @@ interface TicketInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'burn', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'changeOwner', values: [string]): string;
     encodeFunctionData(functionFragment: 'checkTransfer', values: [string, string]): string;
-    encodeFunctionData(functionFragment: 'codes', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'config', values?: undefined): string;
+    encodeFunctionData(functionFragment: 'decode', values: [BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'decodeBatch', values: [BigNumberish[]]): string;
     encodeFunctionData(functionFragment: 'dev', values?: undefined): string;
     encodeFunctionData(functionFragment: 'exists', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'getApproved', values: [BigNumberish]): string;
-    encodeFunctionData(functionFragment: 'getCodes', values: [BigNumberish[]]): string;
-    encodeFunctionData(functionFragment: 'getFormatCode', values: [BigNumberish]): string;
-    encodeFunctionData(functionFragment: 'getFormatCodes', values: [BigNumberish[]]): string;
     encodeFunctionData(functionFragment: 'getUserTokens', values: [string]): string;
     encodeFunctionData(functionFragment: 'isApprovedForAll', values: [string, string]): string;
     encodeFunctionData(functionFragment: 'miner', values?: undefined): string;
@@ -68,6 +65,7 @@ interface TicketInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
     encodeFunctionData(functionFragment: 'ownerOf', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'pageUserTokens', values: [string, BigNumberish, BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'pageUserTokensReverse', values: [string, BigNumberish, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'safeTransferFrom', values: [string, string, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'setApprovalForAll', values: [string, boolean]): string;
     encodeFunctionData(functionFragment: 'setMiner', values: [string]): string;
@@ -89,14 +87,12 @@ interface TicketInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'burn', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'changeOwner', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'checkTransfer', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'codes', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'config', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'decode', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'decodeBatch', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'dev', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'exists', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getApproved', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'getCodes', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'getFormatCode', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'getFormatCodes', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getUserTokens', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'isApprovedForAll', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'miner', data: BytesLike): Result;
@@ -106,6 +102,7 @@ interface TicketInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'ownerOf', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'pageUserTokens', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'pageUserTokensReverse', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'safeTransferFrom', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setApprovalForAll', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setMiner', data: BytesLike): Result;
@@ -182,52 +179,58 @@ export interface Ticket extends Contract {
         }): Promise<ContractTransaction>;
         checkTransfer(from: string, to: string, overrides?: CallOverrides): Promise<[boolean]>;
         'checkTransfer(address,address)'(from: string, to: string, overrides?: CallOverrides): Promise<[boolean]>;
-        codes(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
-        'codes(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
         config(overrides?: CallOverrides): Promise<[string]>;
         'config()'(overrides?: CallOverrides): Promise<[string]>;
+        decode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            number[]
+        ] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        }>;
+        'decode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            number[]
+        ] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        }>;
+        decodeBatch(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[
+            ([BigNumber, BigNumber, number[]] & {
+                sn: BigNumber;
+                blockNumber: BigNumber;
+                numbers: number[];
+            })[]
+        ] & {
+            result: ([BigNumber, BigNumber, number[]] & {
+                sn: BigNumber;
+                blockNumber: BigNumber;
+                numbers: number[];
+            })[];
+        }>;
+        'decodeBatch(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[
+            ([BigNumber, BigNumber, number[]] & {
+                sn: BigNumber;
+                blockNumber: BigNumber;
+                numbers: number[];
+            })[]
+        ] & {
+            result: ([BigNumber, BigNumber, number[]] & {
+                sn: BigNumber;
+                blockNumber: BigNumber;
+                numbers: number[];
+            })[];
+        }>;
         dev(overrides?: CallOverrides): Promise<[string]>;
         'dev()'(overrides?: CallOverrides): Promise<[string]>;
         exists(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
         'exists(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
         getApproved(tokenId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
         'getApproved(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
-        getCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[BigNumber[]] & {
-            result: BigNumber[];
-        }>;
-        'getCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[BigNumber[]] & {
-            result: BigNumber[];
-        }>;
-        getFormatCode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        }>;
-        'getFormatCode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        }>;
-        getFormatCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[
-            ([BigNumber, number[]] & {
-                blockNumber: BigNumber;
-                numbers: number[];
-            })[]
-        ] & {
-            result: ([BigNumber, number[]] & {
-                blockNumber: BigNumber;
-                numbers: number[];
-            })[];
-        }>;
-        'getFormatCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<[
-            ([BigNumber, number[]] & {
-                blockNumber: BigNumber;
-                numbers: number[];
-            })[]
-        ] & {
-            result: ([BigNumber, number[]] & {
-                blockNumber: BigNumber;
-                numbers: number[];
-            })[];
-        }>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<[BigNumber[]]>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<[BigNumber[]]>;
         isApprovedForAll(owner: string, operator: string, overrides?: CallOverrides): Promise<[boolean]>;
@@ -264,6 +267,24 @@ export interface Ticket extends Contract {
         ] & {
             tokens: BigNumber[];
             cursor: BigNumber;
+            count: BigNumber;
+        }>;
+        pageUserTokensReverse(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber,
+            BigNumber
+        ] & {
+            tokens: BigNumber[];
+            newCursor: BigNumber;
+            count: BigNumber;
+        }>;
+        'pageUserTokensReverse(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber,
+            BigNumber
+        ] & {
+            tokens: BigNumber[];
+            newCursor: BigNumber;
             count: BigNumber;
         }>;
         'safeTransferFrom(address,address,uint256)'(from: string, to: string, tokenId: BigNumberish, overrides?: Overrides & {
@@ -353,34 +374,42 @@ export interface Ticket extends Contract {
     }): Promise<ContractTransaction>;
     checkTransfer(from: string, to: string, overrides?: CallOverrides): Promise<boolean>;
     'checkTransfer(address,address)'(from: string, to: string, overrides?: CallOverrides): Promise<boolean>;
-    codes(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-    'codes(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     config(overrides?: CallOverrides): Promise<string>;
     'config()'(overrides?: CallOverrides): Promise<string>;
+    decode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber,
+        BigNumber,
+        number[]
+    ] & {
+        sn: BigNumber;
+        blockNumber: BigNumber;
+        numbers: number[];
+    }>;
+    'decode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber,
+        BigNumber,
+        number[]
+    ] & {
+        sn: BigNumber;
+        blockNumber: BigNumber;
+        numbers: number[];
+    }>;
+    decodeBatch(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, BigNumber, number[]] & {
+        sn: BigNumber;
+        blockNumber: BigNumber;
+        numbers: number[];
+    })[]>;
+    'decodeBatch(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, BigNumber, number[]] & {
+        sn: BigNumber;
+        blockNumber: BigNumber;
+        numbers: number[];
+    })[]>;
     dev(overrides?: CallOverrides): Promise<string>;
     'dev()'(overrides?: CallOverrides): Promise<string>;
     exists(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
     'exists(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
     getApproved(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
     'getApproved(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-    getCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber[]>;
-    'getCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber[]>;
-    getFormatCode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-        blockNumber: BigNumber;
-        numbers: number[];
-    }>;
-    'getFormatCode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-        blockNumber: BigNumber;
-        numbers: number[];
-    }>;
-    getFormatCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, number[]] & {
-        blockNumber: BigNumber;
-        numbers: number[];
-    })[]>;
-    'getFormatCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, number[]] & {
-        blockNumber: BigNumber;
-        numbers: number[];
-    })[]>;
     getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
     'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
     isApprovedForAll(owner: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
@@ -417,6 +446,24 @@ export interface Ticket extends Contract {
     ] & {
         tokens: BigNumber[];
         cursor: BigNumber;
+        count: BigNumber;
+    }>;
+    pageUserTokensReverse(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber[],
+        BigNumber,
+        BigNumber
+    ] & {
+        tokens: BigNumber[];
+        newCursor: BigNumber;
+        count: BigNumber;
+    }>;
+    'pageUserTokensReverse(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber[],
+        BigNumber,
+        BigNumber
+    ] & {
+        tokens: BigNumber[];
+        newCursor: BigNumber;
         count: BigNumber;
     }>;
     'safeTransferFrom(address,address,uint256)'(from: string, to: string, tokenId: BigNumberish, overrides?: Overrides & {
@@ -490,48 +537,50 @@ export interface Ticket extends Contract {
         'changeOwner(address)'(_user: string, overrides?: CallOverrides): Promise<void>;
         checkTransfer(from: string, to: string, overrides?: CallOverrides): Promise<boolean>;
         'checkTransfer(address,address)'(from: string, to: string, overrides?: CallOverrides): Promise<boolean>;
-        codes(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        'codes(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         config(overrides?: CallOverrides): Promise<string>;
         'config()'(overrides?: CallOverrides): Promise<string>;
+        decode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            number[]
+        ] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        }>;
+        'decode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            number[]
+        ] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        }>;
+        decodeBatch(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, BigNumber, number[]] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        })[]>;
+        'decodeBatch(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, BigNumber, number[]] & {
+            sn: BigNumber;
+            blockNumber: BigNumber;
+            numbers: number[];
+        })[]>;
         dev(overrides?: CallOverrides): Promise<string>;
         'dev()'(overrides?: CallOverrides): Promise<string>;
         exists(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         'exists(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         getApproved(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
         'getApproved(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
-        getCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber[]>;
-        'getCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber[]>;
-        getFormatCode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        }>;
-        'getFormatCode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        }>;
-        getFormatCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        })[]>;
-        'getFormatCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<([BigNumber, number[]] & {
-            blockNumber: BigNumber;
-            numbers: number[];
-        })[]>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber[]>;
         isApprovedForAll(owner: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
         'isApprovedForAll(address,address)'(owner: string, operator: string, overrides?: CallOverrides): Promise<boolean>;
         miner(overrides?: CallOverrides): Promise<string>;
         'miner()'(overrides?: CallOverrides): Promise<string>;
-        mint(_to: string, _keys: BigNumberish[], overrides?: CallOverrides): Promise<[BigNumber, BigNumber] & {
-            tokenId: BigNumber;
-            code: BigNumber;
-        }>;
-        'mint(address,uint8[])'(_to: string, _keys: BigNumberish[], overrides?: CallOverrides): Promise<[BigNumber, BigNumber] & {
-            tokenId: BigNumber;
-            code: BigNumber;
-        }>;
+        mint(_to: string, _keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
+        'mint(address,uint8[])'(_to: string, _keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
         mintTotal(overrides?: CallOverrides): Promise<BigNumber>;
         'mintTotal()'(overrides?: CallOverrides): Promise<BigNumber>;
         name(overrides?: CallOverrides): Promise<string>;
@@ -556,6 +605,24 @@ export interface Ticket extends Contract {
         ] & {
             tokens: BigNumber[];
             cursor: BigNumber;
+            count: BigNumber;
+        }>;
+        pageUserTokensReverse(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber,
+            BigNumber
+        ] & {
+            tokens: BigNumber[];
+            newCursor: BigNumber;
+            count: BigNumber;
+        }>;
+        'pageUserTokensReverse(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber,
+            BigNumber
+        ] & {
+            tokens: BigNumber[];
+            newCursor: BigNumber;
             count: BigNumber;
         }>;
         'safeTransferFrom(address,address,uint256)'(from: string, to: string, tokenId: BigNumberish, overrides?: CallOverrides): Promise<void>;
@@ -645,22 +712,18 @@ export interface Ticket extends Contract {
         }): Promise<BigNumber>;
         checkTransfer(from: string, to: string, overrides?: CallOverrides): Promise<BigNumber>;
         'checkTransfer(address,address)'(from: string, to: string, overrides?: CallOverrides): Promise<BigNumber>;
-        codes(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        'codes(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         config(overrides?: CallOverrides): Promise<BigNumber>;
         'config()'(overrides?: CallOverrides): Promise<BigNumber>;
+        decode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'decode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        decodeBatch(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
+        'decodeBatch(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
         dev(overrides?: CallOverrides): Promise<BigNumber>;
         'dev()'(overrides?: CallOverrides): Promise<BigNumber>;
         exists(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'exists(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         getApproved(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'getApproved(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        getCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
-        'getCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
-        getFormatCode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        'getFormatCode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        getFormatCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
-        'getFormatCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<BigNumber>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<BigNumber>;
         isApprovedForAll(owner: string, operator: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -683,6 +746,8 @@ export interface Ticket extends Contract {
         'ownerOf(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         pageUserTokens(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'pageUserTokens(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        pageUserTokensReverse(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'pageUserTokensReverse(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'safeTransferFrom(address,address,uint256)'(from: string, to: string, tokenId: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
@@ -771,22 +836,18 @@ export interface Ticket extends Contract {
         }): Promise<PopulatedTransaction>;
         checkTransfer(from: string, to: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'checkTransfer(address,address)'(from: string, to: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        codes(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'codes(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         config(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'config()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        decode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'decode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        decodeBatch(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'decodeBatch(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         dev(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'dev()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         exists(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'exists(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         getApproved(tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'getApproved(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        getCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'getCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        getFormatCode(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'getFormatCode(uint256)'(_tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        getFormatCodes(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'getFormatCodes(uint256[])'(_tokenIds: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         getUserTokens(_account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'getUserTokens(address)'(_account: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         isApprovedForAll(owner: string, operator: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -809,6 +870,8 @@ export interface Ticket extends Contract {
         'ownerOf(uint256)'(tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         pageUserTokens(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'pageUserTokens(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        pageUserTokensReverse(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'pageUserTokensReverse(address,uint256,uint256)'(_user: string, _cursor: BigNumberish, _size: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'safeTransferFrom(address,address,uint256)'(from: string, to: string, tokenId: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
