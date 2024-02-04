@@ -56872,7 +56872,7 @@
 	   * @return A uint256 array containing token IDs owned by the passed account
 	   */
 	  async getUserTokens(_user) {
-	    const res = await this.contract.getTokens(_user);
+	    const res = await this.contract.getUserTokens(_user);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
@@ -56885,7 +56885,7 @@
 	   * @return A tuple containing an array of token IDs, the next cursor position, and the total count of tokens
 	   */
 	  async pageUserTokens(_user, _cursor, _size) {
-	    const res = await this.contract.pageTokens(_user, _cursor, _size);
+	    const res = await this.contract.pageUserTokens(_user, _cursor, _size);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
@@ -56899,7 +56899,7 @@
 	   * @return A tuple containing an array of token IDs, the next cursor position, and the total count of tokens
 	   */
 	  async pageUserTokensReverse(_user, _cursor, _size) {
-	    const res = await this.contract.pageTokens(_user, _cursor, _size);
+	    const res = await this.contract.pageUserTokensReverse(_user, _cursor, _size);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }
@@ -57748,7 +57748,7 @@
 	   * and the value at each index is the balance of that token ID for the given account.
 	   */
 	  async getUserTokens(_user) {
-	    const res = await this.contract.getTokens(_user);
+	    const res = await this.contract.getUserTokens(_user);
 	    const data = res.map(d => d.toString());
 	    return data;
 	  }

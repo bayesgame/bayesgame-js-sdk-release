@@ -1,6 +1,6 @@
 {
   "name": "bayesgame-js-sdk",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "keywords": [],
   "main": "cjs/src/index.js",
