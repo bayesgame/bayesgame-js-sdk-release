@@ -35302,7 +35302,8 @@
 	  42161: 'https://arb1.arbitrum.io/rpc',
 	  128: 'https://http-mainnet.hecochain.com',
 	  256: 'https://http-testnet.hecochain.com',
-	  80001: 'https://matic-mumbai.chainstacklabs.com'
+	  80001: 'https://matic-mumbai.chainstacklabs.com',
+	  168587773: 'https://sepolia.blast.io'
 	};
 	if (CONF === null || CONF === void 0 ? void 0 : CONF.CHAIN_RPC) Object.assign(CHAIN_RPC, CONF.CHAIN_RPC);
 	const CHAIN_BROWSER = {
@@ -35317,7 +35318,8 @@
 	  256: 'https://testnet.hecoinfo.com',
 	  80001: 'https://mumbai.polygonscan.com',
 	  421611: 'https://rinkeby-explorer.arbitrum.io',
-	  42161: 'https://arbiscan.io'
+	  42161: 'https://arbiscan.io',
+	  168587773: 'https://testnet.blastscan.io'
 	};
 	const CHAIN_NAME = {
 	  1: 'Ethereum Chain Mainnet',
@@ -35331,7 +35333,8 @@
 	  256: 'HECO Chain Testnet',
 	  80001: 'Matic Chain Testnet',
 	  421611: 'Arbitrum Chain Testnet',
-	  42161: 'Arbitrum Chain Mainnet'
+	  42161: 'Arbitrum Chain Mainnet',
+	  168587773: 'Blast Sepolia'
 	};
 	const CHAIN_SYMBOL = {
 	  WToken: {
@@ -35346,7 +35349,8 @@
 	    137: 'WMATIC',
 	    80001: 'WMATIC',
 	    421611: 'WETH',
-	    42161: 'WETH'
+	    42161: 'WETH',
+	    168587773: 'WETH'
 	  },
 	  ZeroToken: {
 	    1: 'ETH',
@@ -35360,7 +35364,8 @@
 	    137: 'MATIC',
 	    80001: 'MATIC',
 	    421611: 'ETH',
-	    42161: 'ETH'
+	    42161: 'ETH',
+	    168587773: 'ETH'
 	  }
 	};
 	const CHAIN_TOKENS = {
@@ -35387,6 +35392,9 @@
 	  },
 	  80001: {
 	    WETH: '0xc56F17386B2c8EF0D58c64A39BAd24001e2D35B9'
+	  },
+	  168587773: {
+	    WETH: '0x4200000000000000000000000000000000000023'
 	  }
 	};
 	const CHAIN_CONTRACTS = {
@@ -35394,7 +35402,8 @@
 	  4: {},
 	  5: {},
 	  56: {},
-	  97: {}
+	  97: {},
+	  168587773: {}
 	};
 	var TokenType;
 	(function (TokenType) {
@@ -54286,12 +54295,20 @@
 	const defaultConf = {
 	  id: 5,
 	  rpcUrl: CHAIN_RPC[5],
-	  Portal: '0xC6AC7cb817541391D4F70EBC9C68EeE7296D84f9',
-	  LottoNumbers: '0x04782f5dA49d94A13f30f167aa130124E69a9e82',
-	  Ticket: '0xa90ACF386C762286568E423a52C1326321d3Fd85'
+	  Portal: '0xc29cC5f81f9b53E6502728a768b2Ba6920EDc1c6',
+	  LottoNumbers: '0x9143bE564d555D2D185e66A41eB2782ee43c05C2',
+	  Ticket: '0x47Fbdf2787F6888bCa6823215E841bb7423f36B8'
 	};
 	const getNetworkMeta = network => {
 	  switch (network) {
+	    case 168587773:
+	      return {
+	        id: network,
+	        rpcUrl: CHAIN_RPC[network],
+	        Portal: '0xfaF25EDDB3d56589371958768861a3622204d737',
+	        LottoNumbers: '0x80cc507bF1e8cFe5750b7e50d2bfadC44cFBb178',
+	        Ticket: '0x4225F69766A05d58992DA7659B6Ea11FdaCeE61E'
+	      };
 	    case 5:
 	      return defaultConf;
 	    default:
@@ -54300,6 +54317,25 @@
 	};
 
 	var PortalABI = [
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "inviterBonusesRate",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "treasuryBonusesRate",
+					type: "uint256"
+				}
+			],
+			name: "BonusesRateLog",
+			type: "event"
+		},
 		{
 			anonymous: false,
 			inputs: [
@@ -54503,6 +54539,25 @@
 			anonymous: false,
 			inputs: [
 				{
+					indexed: false,
+					internalType: "uint256[]",
+					name: "oldValue",
+					type: "uint256[]"
+				},
+				{
+					indexed: false,
+					internalType: "uint256[]",
+					name: "newValue",
+					type: "uint256[]"
+				}
+			],
+			name: "PrizeRatesLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
 					indexed: true,
 					internalType: "bytes32",
 					name: "sn",
@@ -54522,6 +54577,25 @@
 				}
 			],
 			name: "RegisterLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "oldValue",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "newValue",
+					type: "uint256"
+				}
+			],
+			name: "RoundExpiredLog",
 			type: "event"
 		},
 		{

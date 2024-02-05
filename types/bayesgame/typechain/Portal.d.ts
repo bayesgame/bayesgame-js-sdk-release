@@ -175,6 +175,7 @@ interface PortalInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'treasuryBonusesRate', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'verifyMessage', data: BytesLike): Result;
     events: {
+        'BonusesRateLog(uint256,uint256)': EventFragment;
         'ClaimBonusesLog(uint256,uint256,address,address,address,uint256,uint256,uint256,uint256)': EventFragment;
         'ConfigChanged(address,address,address)': EventFragment;
         'KeyPriceLog(uint256,uint256)': EventFragment;
@@ -182,8 +183,11 @@ interface PortalInterface extends ethers.utils.Interface {
         'MakeTicketLog(address,uint256)': EventFragment;
         'MintKeyLog(bytes32,address,uint8[])': EventFragment;
         'OwnerChanged(address,address,address)': EventFragment;
+        'PrizeRatesLog(uint256[],uint256[])': EventFragment;
         'RegisterLog(bytes32,address,address)': EventFragment;
+        'RoundExpiredLog(uint256,uint256)': EventFragment;
     };
+    getEvent(nameOrSignatureOrTopic: 'BonusesRateLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'ClaimBonusesLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'ConfigChanged'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'KeyPriceLog'): EventFragment;
@@ -191,7 +195,9 @@ interface PortalInterface extends ethers.utils.Interface {
     getEvent(nameOrSignatureOrTopic: 'MakeTicketLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'MintKeyLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'OwnerChanged'): EventFragment;
+    getEvent(nameOrSignatureOrTopic: 'PrizeRatesLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'RegisterLog'): EventFragment;
+    getEvent(nameOrSignatureOrTopic: 'RoundExpiredLog'): EventFragment;
 }
 export interface Portal extends Contract {
     connect(signerOrProvider: Signer | Provider | string): this;
@@ -918,6 +924,10 @@ export interface Portal extends Contract {
         'verifyMessage(bytes32,bytes)'(_messageHash: BytesLike, _signature: BytesLike, overrides?: CallOverrides): Promise<boolean>;
     };
     filters: {
+        BonusesRateLog(inviterBonusesRate: BigNumberish | null, treasuryBonusesRate: BigNumberish | null): TypedEventFilter<[BigNumber, BigNumber], {
+            inviterBonusesRate: BigNumber;
+            treasuryBonusesRate: BigNumber;
+        }>;
         ClaimBonusesLog(round: BigNumberish | null, tokenId: BigNumberish | null, user: null, inviter: null, treasury: null, level: null, userAmount: null, inviterAmount: null, treasuryAmount: null): TypedEventFilter<[
             BigNumber,
             BigNumber,
@@ -967,10 +977,18 @@ export interface Portal extends Contract {
             _old: string;
             _new: string;
         }>;
+        PrizeRatesLog(oldValue: null, newValue: null): TypedEventFilter<[BigNumber[], BigNumber[]], {
+            oldValue: BigNumber[];
+            newValue: BigNumber[];
+        }>;
         RegisterLog(sn: BytesLike | null, user: string | null, inviter: string | null): TypedEventFilter<[string, string, string], {
             sn: string;
             user: string;
             inviter: string;
+        }>;
+        RoundExpiredLog(oldValue: BigNumberish | null, newValue: BigNumberish | null): TypedEventFilter<[BigNumber, BigNumber], {
+            oldValue: BigNumber;
+            newValue: BigNumber;
         }>;
     };
     estimateGas: {
