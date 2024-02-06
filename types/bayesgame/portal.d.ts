@@ -79,10 +79,18 @@ export declare class Portal extends BaseContract {
      * Fetches the price of a key.
      */
     keyPrice(): Promise<any>;
+    totalRound(): Promise<any>;
+    maxMintSize(): Promise<any>;
+    maxMintRang(): Promise<any>;
+    roundExpired(): Promise<any>;
     /**
      * Retrieves the rate of bonuses for an inviter.
      */
     inviterBonusesRate(): Promise<any>;
+    /**
+     * Retrieves the rate of bonuses for treasury.
+     */
+    treasuryBonusesRate(): Promise<any>;
     /**
      * Obtains the prize rates.
      */

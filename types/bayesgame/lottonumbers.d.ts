@@ -29,6 +29,7 @@ export declare class LottoNumbers extends ERC1155 {
      */
     getTotalSupplies(): Promise<any>;
     totalSupply(_id: BigNumberish): Promise<any>;
+    maxId(): Promise<any>;
     setSigner(_signer: Wallet): void;
 }
 export declare function getLottoNumbers(chain: Chain, address?: string): LottoNumbers;

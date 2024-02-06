@@ -35305,7 +35305,7 @@
 	  80001: 'https://matic-mumbai.chainstacklabs.com',
 	  168587773: 'https://sepolia.blast.io'
 	};
-	if (CONF === null || CONF === void 0 ? void 0 : CONF.CHAIN_RPC) Object.assign(CHAIN_RPC, CONF.CHAIN_RPC);
+	if (CONF !== null && CONF !== void 0 && CONF.CHAIN_RPC) Object.assign(CHAIN_RPC, CONF.CHAIN_RPC);
 	const CHAIN_BROWSER = {
 	  1: 'https://etherscan.io',
 	  4: 'https://rinkeby.etherscan.io',
@@ -35423,9 +35423,9 @@
 	})(ItemType || (ItemType = {}));
 	const MAX_INT = lib$v.BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 	const get_env = function (name) {
+	  var _CONF$name;
 	  let def = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-	  var _a;
-	  return (_a = CONF[name]) !== null && _a !== void 0 ? _a : def;
+	  return (_CONF$name = CONF[name]) !== null && _CONF$name !== void 0 ? _CONF$name : def;
 	};
 
 	var constants = /*#__PURE__*/Object.freeze({
@@ -35496,7 +35496,7 @@
 	    const _tokens = CHAIN_TOKENS;
 	    try {
 	      return _tokens[this.chainId][name];
-	    } catch (_a) {
+	    } catch {
 	      throw new Error('getTokenAddr not found');
 	    }
 	  }
@@ -35553,10 +35553,10 @@
 	    return await this.getSigner(0).getAddress();
 	  }
 	  async sendTransaction(transaction) {
-	    if ((transaction === null || transaction === void 0 ? void 0 : transaction.value) && this.isZero(transaction.value)) {
+	    if (transaction !== null && transaction !== void 0 && transaction.value && this.isZero(transaction.value)) {
 	      delete transaction.value;
 	    }
-	    if (!(transaction === null || transaction === void 0 ? void 0 : transaction.gasLimit)) {
+	    if (!(transaction !== null && transaction !== void 0 && transaction.gasLimit)) {
 	      let gasLimit = await this.getSigner(0).estimateGas(transaction);
 	      // console.log('gasLimit', gasLimit.toString());
 	      transaction.gasLimit = gasLimit.mul(120).div(100);
@@ -47262,7 +47262,8 @@
 	    }
 	  }
 	  _handleNewChain(chainId) {
-	    if (typeof chainId === 'object' && (chainId === null || chainId === void 0 ? void 0 : chainId.chainId)) {
+	    var _chainId;
+	    if (typeof chainId === 'object' && (_chainId = chainId) !== null && _chainId !== void 0 && _chainId.chainId) {
 	      chainId = chainId.chainId;
 	    }
 	    if (!chainId) {
@@ -47599,7 +47600,7 @@
 	        ...overrides
 	      };
 	      let value = lib$v.BigNumber.from('0');
-	      if (mergedOverrides === null || mergedOverrides === void 0 ? void 0 : mergedOverrides.value) value = lib$v.BigNumber.from(mergedOverrides.value);
+	      if (mergedOverrides !== null && mergedOverrides !== void 0 && mergedOverrides.value) value = lib$v.BigNumber.from(mergedOverrides.value);
 	      return {
 	        to: contract.address,
 	        value,
@@ -55853,11 +55854,34 @@
 	  async keyPrice() {
 	    return await this.contract.keyPrice();
 	  }
+	  // Gets the current round
+	  async totalRound() {
+	    return await this.contract.totalRound();
+	  }
+	  // Gets max mint size
+	  async maxMintSize() {
+	    return await this.contract.maxMintSize();
+	  }
+	  // Gets max mint rang (1 ~ maxMintRang)
+	  async maxMintRang() {
+	    return await this.contract.maxMintRang();
+	  }
+	  // Get the round expiration block number
+	  async roundExpired() {
+	    return await this.contract.roundExpired();
+	  }
 	  /**
 	   * Retrieves the rate of bonuses for an inviter.
 	   */
 	  async inviterBonusesRate() {
 	    const rate = await this.contract.inviterBonusesRate();
+	    return rate.div(10000).toNumber();
+	  }
+	  /**
+	   * Retrieves the rate of bonuses for treasury.
+	   */
+	  async treasuryBonusesRate() {
+	    const rate = await this.contract.treasuryBonusesRate();
 	    return rate.div(10000).toNumber();
 	  }
 	  /**
@@ -56921,6 +56945,10 @@
 	  async exists(_tokenId) {
 	    return await this.contract.exists(_tokenId);
 	  }
+	  // Gets the mint total number
+	  async mintTotal() {
+	    return await this.contract.mintTotal();
+	  }
 	  /**
 	   * @notice Decodes and retrieves the serial number, the block number and a sequence of numbers for a specific token ID
 	   * @param _tokenId The token ID to retrieve the decoded data for
@@ -57843,6 +57871,10 @@
 	  async totalSupply(_id) {
 	    const res = await this.contract.totalSupply(_id);
 	    return res.toString();
+	  }
+	  // Gets the max id
+	  async maxId() {
+	    return await this.contract.maxId();
 	  }
 	  setSigner(_signer) {
 	    this.signer = _signer;
@@ -60815,11 +60847,11 @@
 	  return x === undefined || Array.isArray(x) && x.every(xi => isMethodArg(xi) || Array.isArray(xi) && xi.every(isMethodArg));
 	}
 	async function useSingleContractWithCallData(chain, contract, callData, options) {
-	  var _a;
+	  var _options$gasRequired;
 	  if (!callData.length) {
 	    throw new Error('useSingleContractWithCallData no call data');
 	  }
-	  let gasLimit = (_a = options === null || options === void 0 ? void 0 : options.gasRequired) !== null && _a !== void 0 ? _a : 0;
+	  let gasLimit = (_options$gasRequired = options === null || options === void 0 ? void 0 : options.gasRequired) !== null && _options$gasRequired !== void 0 ? _options$gasRequired : 0;
 	  if (gasLimit === undefined) gasLimit = 0;
 	  const calls = callData.map(d => {
 	    return {
@@ -60838,11 +60870,11 @@
 	  return res;
 	}
 	async function useMultipleContractSingleData(chain, addresses, contractInterface, methodName, callInputs, options) {
-	  var _a;
+	  var _options$gasRequired2;
 	  if (!addresses.length) {
 	    throw new Error('useMultipleContractSingleData no addresses');
 	  }
-	  let gasLimit = (_a = options === null || options === void 0 ? void 0 : options.gasRequired) !== null && _a !== void 0 ? _a : 0;
+	  let gasLimit = (_options$gasRequired2 = options === null || options === void 0 ? void 0 : options.gasRequired) !== null && _options$gasRequired2 !== void 0 ? _options$gasRequired2 : 0;
 	  if (gasLimit === undefined) gasLimit = 0;
 	  const {
 	    fragment,
@@ -61082,12 +61114,73 @@
 	  }
 	}
 
+	class Uint8ArrayUint128Encoder {
+	  // Encodes a bigint (as uint128) and a number array (as uint8 array) into a single bigint value.
+	  static encode(number, array) {
+	    if (array.length > 15) {
+	      throw new Error('Array length exceeds limit');
+	    }
+	    let encoded = number;
+	    encoded |= BigInt(array.length) << 128n;
+	    for (let i = 0; i < array.length; i++) {
+	      let shiftedValue = BigInt(array[i]) << 128n + 8n + BigInt(i) * 8n;
+	      encoded |= shiftedValue;
+	    }
+	    return encoded;
+	  }
+	  // Decodes a bigint value back into a bigint (as uint128) and a number array (as uint8 array).
+	  static decode(encoded) {
+	    const number = encoded & (1n << 128n) - 1n;
+	    const length = Number(encoded >> 128n & 0xffn);
+	    const array = [];
+	    let tempEncodedArray = encoded >> 136n;
+	    for (let i = 0; i < length; i++) {
+	      array.push(Number(tempEncodedArray & 0xffn));
+	      tempEncodedArray >>= 8n;
+	    }
+	    return [number, array];
+	  }
+	}
+	class Uint8ArrayUint64And128Encoder {
+	  static encode(number64, number128, array) {
+	    if (array.length > 7) {
+	      throw new Error('Array length exceeds limit');
+	    }
+	    let encoded = number64;
+	    encoded |= number128 << BigInt(64);
+	    // Store the length of the array in the next 8 bits after the 192 bits
+	    // meant for uint64 and uint128.
+	    encoded |= BigInt(array.length) << BigInt(64) + BigInt(128);
+	    // Encode array elements, starting just after the length bit
+	    for (let i = 0; i < array.length; i++) {
+	      const shiftedValue = BigInt(array[i]) << BigInt(64) + BigInt(128) + BigInt(8) + BigInt(i * 8);
+	      encoded |= shiftedValue;
+	    }
+	    return encoded;
+	  }
+	  static decode(encoded) {
+	    const number64 = encoded & (BigInt(1) << BigInt(64)) - BigInt(1);
+	    const number128 = encoded >> BigInt(64) & (BigInt(1) << BigInt(128)) - BigInt(1);
+	    // Extract the length of the array from the 8 bits following the first 192 bits.
+	    const length = Number(encoded >> BigInt(64) + BigInt(128) & BigInt(255));
+	    const array = [];
+	    // Decode array elements, starting just after the length bit
+	    for (let i = 0; i < length; i++) {
+	      const val = Number(encoded >> BigInt(64) + BigInt(128) + BigInt(8) + BigInt(i * 8) & BigInt(255));
+	      array.push(val);
+	    }
+	    return [number64, number128, array];
+	  }
+	}
+
 	var index = /*#__PURE__*/Object.freeze({
 		__proto__: null,
 		types: types,
 		bignumber: bignumber,
 		format: format,
-		TokenUtil: TokenUtil
+		TokenUtil: TokenUtil,
+		Uint8ArrayUint128Encoder: Uint8ArrayUint128Encoder,
+		Uint8ArrayUint64And128Encoder: Uint8ArrayUint64And128Encoder
 	});
 
 	exports.BrowserChain = BrowserChain;

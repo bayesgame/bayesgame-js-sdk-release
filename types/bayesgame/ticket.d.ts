@@ -10,6 +10,7 @@ export declare class Ticket extends ERC721 {
     constructor(chain: Chain, contractAddress?: string);
     checkTransfer(_from: string, _to: string): Promise<any>;
     exists(_tokenId: BigNumberish): Promise<any>;
+    mintTotal(): Promise<any>;
     /**
      * @notice Decodes and retrieves the serial number, the block number and a sequence of numbers for a specific token ID
      * @param _tokenId The token ID to retrieve the decoded data for
