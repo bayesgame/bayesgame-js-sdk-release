@@ -1,3 +1,7 @@
+export declare class Uint8ArrayEncoder {
+    static encode(array: number[]): bigint;
+    static decode(encodedValue: bigint): number[];
+}
 export declare class Uint8ArrayUint128Encoder {
     static encode(number: bigint, array: number[]): bigint;
     static decode(encoded: bigint): [bigint, number[]];

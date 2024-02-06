@@ -61114,6 +61114,31 @@
 	  }
 	}
 
+	class Uint8ArrayEncoder {
+	  // Encodes a uint8 array into a single BigInt value.
+	  static encode(array) {
+	    if (array.length > 31) {
+	      throw new Error('Array length exceeds limit');
+	    }
+	    let result = BigInt(array.length); // Store the array length in the first byte
+	    for (let i = 0; i < array.length; i++) {
+	      const shiftedValue = BigInt(array[i]) << BigInt((i + 1) * 8); // Shift and store each element starting from the second byte
+	      result |= shiftedValue;
+	    }
+	    return result;
+	  }
+	  // Decodes a BigInt value back into a uint8 array.
+	  static decode(encodedValue) {
+	    const length = Number(encodedValue & BigInt(0xff)); // Directly read the length
+	    const array = new Array(length); // Create an array of the specified length
+	    let tempEncodedArray = encodedValue >> BigInt(8); // Skip the first byte which contains the length information
+	    for (let i = 0; i < length; i++) {
+	      array[i] = Number(tempEncodedArray & BigInt(0xff)); // Read each successive byte as an array element
+	      tempEncodedArray >>= BigInt(8);
+	    }
+	    return array;
+	  }
+	}
 	class Uint8ArrayUint128Encoder {
 	  // Encodes a bigint (as uint128) and a number array (as uint8 array) into a single bigint value.
 	  static encode(number, array) {
@@ -61179,6 +61204,7 @@
 		bignumber: bignumber,
 		format: format,
 		TokenUtil: TokenUtil,
+		Uint8ArrayEncoder: Uint8ArrayEncoder,
 		Uint8ArrayUint128Encoder: Uint8ArrayUint128Encoder,
 		Uint8ArrayUint64And128Encoder: Uint8ArrayUint64And128Encoder
 	});
