@@ -1,4 +1,5 @@
 import { BigNumberish, Wallet } from 'ethers';
+import type { TypedTokenInfo } from '../common/types';
 import { TypedDataDomain } from '@ethersproject/abstract-signer';
 import { Chain } from '../chain';
 import { ERC1155 } from '../erc1155';
@@ -30,6 +31,7 @@ export declare class LottoNumbers extends ERC1155 {
     getTotalSupplies(): Promise<any>;
     totalSupply(_id: BigNumberish): Promise<any>;
     maxId(): Promise<any>;
+    protected _info(): Promise<TypedTokenInfo>;
     setSigner(_signer: Wallet): void;
 }
 export declare function getLottoNumbers(chain: Chain, address?: string): LottoNumbers;

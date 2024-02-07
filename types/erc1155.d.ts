@@ -15,7 +15,7 @@ export declare class ERC1155 extends BaseContract {
     tokenURI(tokenId: number | string): Promise<string>;
     uri(tokenId: number | string): Promise<string>;
     ownerOf(tokenId: number | string): Promise<string>;
-    private _info;
+    protected _info(): Promise<TypedTokenInfo>;
     setApprovalForAllEncodeFunction(operator: string, approved: boolean): import("./common/types").TypedFunctionData;
     safeTransferFromEncodeFunction(from: string, to: string, id: number | string, amount: number | string, data: string): import("./common/types").TypedFunctionData;
     safeBatchTransferFromEncodeFunction(from: string, to: string, ids: number[] | string[], amounts: number[] | string[], data: string): import("./common/types").TypedFunctionData;

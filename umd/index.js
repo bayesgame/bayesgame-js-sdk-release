@@ -35611,8 +35611,9 @@
 	class BrowserChain extends Chain {}
 	let Chains = {};
 	function getChain(chainId) {
-	  if (!Chains[chainId]) {
-	    Chains[chainId] = new LocalChain(chainId);
+	  let rpc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+	  if (!Chains[chainId] || rpc) {
+	    Chains[chainId] = new LocalChain(chainId, rpc);
 	  }
 	  return Chains[chainId];
 	}
@@ -53817,10 +53818,12 @@
 	    return getTransactionMethods(this.contract, 'setApprovalForAll', [operator, approved]);
 	  }
 	  async name() {
-	    return '';
+	    const token = await this.info();
+	    return token.name;
 	  }
 	  async symbol() {
-	    return '';
+	    const token = await this.info();
+	    return token.symbol;
 	  }
 	  async info() {
 	    let token = this.chain.getToken(this.address);
@@ -57875,6 +57878,21 @@
 	  // Gets the max id
 	  async maxId() {
 	    return await this.contract.maxId();
+	  }
+	  async _info() {
+	    if (this.chain.isZeroAddress(this.address)) {
+	      throw new Error('invlaid erc1155 address');
+	    }
+	    const [name, symbol] = await Promise.all([this.contract.name(), this.contract.symbol()]);
+	    let token = {
+	      standard: 'erc1155',
+	      address: this.address,
+	      name: name,
+	      symbol: symbol,
+	      decimals: 0
+	    };
+	    this.chain.setToken(this.address, token);
+	    return token;
 	  }
 	  setSigner(_signer) {
 	    this.signer = _signer;

@@ -53,4 +53,4 @@ export declare class LocalChain extends Chain {
 }
 export declare class BrowserChain extends Chain {
 }
-export declare function getChain(chainId: number): LocalChain;
+export declare function getChain(chainId: number, rpc?: string): LocalChain;
