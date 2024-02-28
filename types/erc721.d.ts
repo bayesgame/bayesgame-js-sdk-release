@@ -5,6 +5,7 @@ import { BaseContract } from './contract';
 export declare class ERC721 extends BaseContract {
     constructor(chain: Chain, contractAddress: string, abi?: any);
     transferFrom(from: string, to: string, tokenId: number | string): TransactionMethods<ContractMethodReturnType<ERC721Contract, 'transferFrom'>>;
+    safeTransferFrom(from: string, to: string, tokenId: number | string): TransactionMethods<ContractMethodReturnType<ERC721Contract, 'safeTransferFrom(address,address,uint256)'>>;
     approve(operator: string, tokenId: number | string): TransactionMethods<ContractMethodReturnType<ERC721Contract, 'approve'>>;
     setApprovalForAll(operator: string, approved: boolean): TransactionMethods<ContractMethodReturnType<ERC721Contract, 'setApprovalForAll'>>;
     isApprovedForAll(owner: string, operator: string): Promise<boolean>;

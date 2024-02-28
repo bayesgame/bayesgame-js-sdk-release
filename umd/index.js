@@ -53470,6 +53470,9 @@
 	  transferFrom(from, to, tokenId) {
 	    return getTransactionMethods(this.contract, 'transferFrom', [from, to, tokenId]);
 	  }
+	  safeTransferFrom(from, to, tokenId) {
+	    return getTransactionMethods(this.contract, 'safeTransferFrom(address,address,uint256)', [from, to, tokenId]);
+	  }
 	  approve(operator, tokenId) {
 	    return getTransactionMethods(this.contract, 'approve', [operator, tokenId]);
 	  }
@@ -54299,9 +54302,10 @@
 	const defaultConf = {
 	  id: 5,
 	  rpcUrl: CHAIN_RPC[5],
-	  Portal: '0xc29cC5f81f9b53E6502728a768b2Ba6920EDc1c6',
-	  LottoNumbers: '0x9143bE564d555D2D185e66A41eB2782ee43c05C2',
-	  Ticket: '0x47Fbdf2787F6888bCa6823215E841bb7423f36B8'
+	  Portal: '0x80428c637Bc4498CaB45a675C4E6018EC67198E6',
+	  LottoNumbers: '0x4De3256041a7F839a35046a904b1AED611eB51A8',
+	  Ticket: '0x1710782a58C067DE0811a3cE4dD7f3B9c5ac5539',
+	  Jackpot: '0x1ED6B168E855D8dF1c5FCF2FC2F0eF8d561eff3C'
 	};
 	const getNetworkMeta = network => {
 	  switch (network) {
@@ -54309,9 +54313,10 @@
 	      return {
 	        id: network,
 	        rpcUrl: CHAIN_RPC[network],
-	        Portal: '0xfaF25EDDB3d56589371958768861a3622204d737',
-	        LottoNumbers: '0x80cc507bF1e8cFe5750b7e50d2bfadC44cFBb178',
-	        Ticket: '0x4225F69766A05d58992DA7659B6Ea11FdaCeE61E'
+	        Portal: '0x9033AD3737bE8f2e3A315ba16184230aD98eda2D',
+	        LottoNumbers: '0x14F339A5FF579EAdD48c0913B845287011e4c250',
+	        Ticket: '0x80428c637Bc4498CaB45a675C4E6018EC67198E6',
+	        Jackpot: '0x1710782a58C067DE0811a3cE4dD7f3B9c5ac5539'
 	      };
 	    case 5:
 	      return defaultConf;
@@ -54545,17 +54550,23 @@
 				{
 					indexed: false,
 					internalType: "uint256[]",
-					name: "oldValue",
+					name: "rates",
 					type: "uint256[]"
 				},
 				{
 					indexed: false,
 					internalType: "uint256[]",
-					name: "newValue",
+					name: "maxs",
+					type: "uint256[]"
+				},
+				{
+					indexed: false,
+					internalType: "uint256[]",
+					name: "amounts",
 					type: "uint256[]"
 				}
 			],
-			name: "PrizeRatesLog",
+			name: "PrizeRuleLog",
 			type: "event"
 		},
 		{
@@ -54699,6 +54710,25 @@
 				}
 			],
 			name: "checkKeys",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint8[]",
+					name: "_keys",
+					type: "uint8[]"
+				}
+			],
+			name: "checkOpenRoundKeys",
 			outputs: [
 				{
 					internalType: "bool",
@@ -54941,11 +54971,21 @@
 		{
 			inputs: [
 			],
-			name: "getPrizeRates",
+			name: "getPrizeRule",
 			outputs: [
 				{
 					internalType: "uint256[]",
-					name: "",
+					name: "rates",
+					type: "uint256[]"
+				},
+				{
+					internalType: "uint256[]",
+					name: "maxs",
+					type: "uint256[]"
+				},
+				{
+					internalType: "uint256[]",
+					name: "amounts",
 					type: "uint256[]"
 				}
 			],
@@ -55249,6 +55289,44 @@
 					type: "uint256"
 				}
 			],
+			name: "prizeAmounts",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "prizeMaxs",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
 			name: "prizeRates",
 			outputs: [
 				{
@@ -55487,9 +55565,19 @@
 					internalType: "uint256[]",
 					name: "_rates",
 					type: "uint256[]"
+				},
+				{
+					internalType: "uint256[]",
+					name: "_maxs",
+					type: "uint256[]"
+				},
+				{
+					internalType: "uint256[]",
+					name: "_amounts",
+					type: "uint256[]"
 				}
 			],
-			name: "setPrizeRates",
+			name: "setPrizeRule",
 			outputs: [
 			],
 			stateMutability: "nonpayable",
@@ -55888,12 +55976,15 @@
 	    return rate.div(10000).toNumber();
 	  }
 	  /**
-	   * Obtains the prize rates.
+	   * Obtains the prize rule.
 	   */
-	  async getPrizeRates() {
-	    const data = await this.contract.getPrizeRates();
-	    const res = data.map(d => d.toNumber() / 10000);
-	    return res;
+	  async getPrizeRule() {
+	    const res = await this.contract.getPrizeRule();
+	    return {
+	      rates: res.rates.map(d => d.div(10000).toNumber()),
+	      maxs: res.maxs.map(d => d.toString()),
+	      amounts: res.amounts.map(d => d.toString())
+	    };
 	  }
 	  /**
 	   * Checks whether a specific round has expired based on block numbers.
@@ -57907,6 +57998,881 @@
 	  return chain.contractmaps[address.toLowerCase()];
 	}
 
+	var JackpotABI = [
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "poolId",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "address",
+					name: "user",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "userAmount",
+					type: "uint256"
+				}
+			],
+			name: "ClaimBonusesLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "oldValue",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "newValue",
+					type: "uint256"
+				}
+			],
+			name: "ClearingFeeRateLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "poolId",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "round",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "tokenId",
+					type: "uint256"
+				},
+				{
+					indexed: false,
+					internalType: "address",
+					name: "user",
+					type: "address"
+				},
+				{
+					indexed: false,
+					internalType: "uint256",
+					name: "clearingFee",
+					type: "uint256"
+				},
+				{
+					indexed: false,
+					internalType: "uint256",
+					name: "amount",
+					type: "uint256"
+				}
+			],
+			name: "ClearingLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_old",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_new",
+					type: "address"
+				}
+			],
+			name: "ConfigChanged",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "address",
+					name: "user",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "tokenId",
+					type: "uint256"
+				},
+				{
+					indexed: true,
+					internalType: "uint256",
+					name: "poolId",
+					type: "uint256"
+				}
+			],
+			name: "JoinLog",
+			type: "event"
+		},
+		{
+			anonymous: false,
+			inputs: [
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_old",
+					type: "address"
+				},
+				{
+					indexed: true,
+					internalType: "address",
+					name: "_new",
+					type: "address"
+				}
+			],
+			name: "OwnerChanged",
+			type: "event"
+		},
+		{
+			inputs: [
+			],
+			name: "admin",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256[]",
+					name: "_poolIds",
+					type: "uint256[]"
+				}
+			],
+			name: "batchClaimBonuses",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256[]",
+					name: "_tokenIds",
+					type: "uint256[]"
+				}
+			],
+			name: "batchJoin",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					internalType: "uint256[]",
+					name: "_poolIds",
+					type: "uint256[]"
+				}
+			],
+			name: "batchQueryBonuses",
+			outputs: [
+				{
+					internalType: "uint256[]",
+					name: "",
+					type: "uint256[]"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256[]",
+					name: "_rounds",
+					type: "uint256[]"
+				},
+				{
+					internalType: "uint256[]",
+					name: "_tokenIds",
+					type: "uint256[]"
+				}
+			],
+			name: "batchQueryClearing",
+			outputs: [
+				{
+					components: [
+						{
+							internalType: "uint256",
+							name: "clearingFee",
+							type: "uint256"
+						},
+						{
+							internalType: "uint256",
+							name: "usersBonuses",
+							type: "uint256"
+						}
+					],
+					internalType: "struct Jackpot.ClearingData[]",
+					name: "",
+					type: "tuple[]"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				}
+			],
+			name: "changeOwner",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_poolId",
+					type: "uint256"
+				}
+			],
+			name: "claimBonuses",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_round",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				}
+			],
+			name: "clearing",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "poolId",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "clearingFee",
+					type: "uint256"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_round",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				}
+			],
+			name: "clearingAndClaim",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "clearingFeeRate",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "config",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "currency",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "dev",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "enabled",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_token",
+					type: "address"
+				}
+			],
+			name: "getBalance",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_portal",
+					type: "address"
+				}
+			],
+			name: "initialize",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				}
+			],
+			name: "join",
+			outputs: [
+				{
+					internalType: "bool",
+					name: "",
+					type: "bool"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				},
+				{
+					internalType: "address",
+					name: "_from",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				},
+				{
+					internalType: "bytes",
+					name: "",
+					type: "bytes"
+				}
+			],
+			name: "onERC721Received",
+			outputs: [
+				{
+					internalType: "bytes4",
+					name: "",
+					type: "bytes4"
+				}
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "owner",
+			outputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "poolsBonuses",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "poolsTicketAmount",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "portal",
+			outputs: [
+				{
+					internalType: "contract IPortal",
+					name: "",
+					type: "address"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "_poolId",
+					type: "uint256"
+				}
+			],
+			name: "queryBonuses",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_round",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "_tokenId",
+					type: "uint256"
+				}
+			],
+			name: "queryClearing",
+			outputs: [
+				{
+					components: [
+						{
+							internalType: "uint256",
+							name: "clearingFee",
+							type: "uint256"
+						},
+						{
+							internalType: "uint256",
+							name: "usersBonuses",
+							type: "uint256"
+						}
+					],
+					internalType: "struct Jackpot.ClearingData",
+					name: "",
+					type: "tuple"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "uint256",
+					name: "_rate",
+					type: "uint256"
+				}
+			],
+			name: "setClearingFeeRate",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "bool",
+					name: "_enabled",
+					type: "bool"
+				}
+			],
+			name: "setEnabled",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "_config",
+					type: "address"
+				}
+			],
+			name: "setupConfig",
+			outputs: [
+			],
+			stateMutability: "nonpayable",
+			type: "function"
+		},
+		{
+			inputs: [
+			],
+			name: "totalPool",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "usersClaimedAmount",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
+					internalType: "address",
+					name: "",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			name: "usersTitcketAmount",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			stateMutability: "payable",
+			type: "receive"
+		}
+	];
+
+	class Jackpot extends BaseContract$1 {
+	  constructor(chain, contractAddress) {
+	    const networkMeta = getNetworkMeta(chain.chainId);
+	    super(chain, contractAddress !== null && contractAddress !== void 0 ? contractAddress : networkMeta.Jackpot, JackpotABI);
+	    this.contract = this.contract;
+	    this.networkMeta = networkMeta;
+	  }
+	  /**
+	   * @notice Allows a user to join a jackpot pool by transferring a ticket token to the contract.
+	   * @param _tokenId The ID of the ticket token to be transferred.
+	   */
+	  join(_tokenId) {
+	    return getTransactionMethods(this.contract, 'join', [_tokenId]);
+	  }
+	  /**
+	   * @notice Allows a user to batch join multiple jackpot pools by transferring multiple ticket tokens.
+	   * @param _tokenIds An array containing the IDs of ticket tokens to be transferred.
+	   */
+	  batchJoin(_tokenIds) {
+	    return getTransactionMethods(this.contract, 'batchJoin', [_tokenIds]);
+	  }
+	  /**
+	   * @notice Initiates the clearing process for a specific round and token ID.
+	   * @dev Only callable when the contract is enabled. It calculates the clearing fee,
+	   *      awards the bonuses, and increments the totalPool counter for the next pool.
+	   * @param _round The round number to clear.
+	   * @param _tokenId The ticket token ID associated with the clearing.
+	   */
+	  clearing(_round, _tokenId) {
+	    return getTransactionMethods(this.contract, 'clearing', [_round, _tokenId]);
+	  }
+	  /**
+	   * @notice Performs the clearing process and then claims the bonuses for the user in one transaction.
+	   * @param _round The round number to clear.
+	   * @param _tokenId The ticket token ID associated with the clearing.
+	   */
+	  clearingAndClaim(_round, _tokenId) {
+	    return getTransactionMethods(this.contract, 'clearingAndClaim', [_round, _tokenId]);
+	  }
+	  /**
+	   * @notice Allows a user to claim their share of bonuses from a particular pool.
+	   * @param _poolId The ID of the pool from which to claim bonuses.
+	   */
+	  claimBonuses(_poolId) {
+	    return getTransactionMethods(this.contract, 'claimBonuses', [_poolId]);
+	  }
+	  /**
+	   * @notice Allows a user to batch claim bonuses from multiple pools.
+	   * @param _poolIds An array of pool IDs from which to claim bonuses.
+	   */
+	  batchClaimBonuses(_poolIds) {
+	    return getTransactionMethods(this.contract, 'batchClaimBonuses', [_poolIds]);
+	  }
+	  // Gets the current pool
+	  async totalPool() {
+	    return await this.contract.totalPool();
+	  }
+	  // Gets the fee rate taken during clearing
+	  async clearingFeeRate() {
+	    const rate = await this.contract.clearingFeeRate();
+	    return rate.div(10000).toNumber();
+	  }
+	  /**
+	   * @notice Provides information about the potential clearing data for a given round and token ID.
+	   * @dev Useful for determining the potential clearing fee and user bonuses for a token before actual clearing.
+	   * @param _round The round number for the query.
+	   * @param _tokenId The ticket token ID for the query.
+	   * @return A `ClearingData` struct containing the calculated clearing fee and user bonuses.
+	   */
+	  async queryClearing(_round, _tokenId) {
+	    return await this.contract.queryClearing(_round, _tokenId);
+	  }
+	  /**
+	   * @notice Batch queries the potential clearing data for multiple rounds and token IDs.
+	   * @param _rounds An array of round numbers for the queries.
+	   * @param _tokenIds An array of ticket token IDs for the queries.
+	   * @return An array of `ClearingData` structs for each provided round and token ID pair.
+	   */
+	  async batchQueryClearing(_rounds, _tokenIds) {
+	    return await this.contract.batchQueryClearing(_rounds, _tokenIds);
+	  }
+	  /**
+	   * @notice Queries the bonus amount a user can claim from a specific pool.
+	   * @dev Calculates the user's share of the pool based on the number of tickets they hold.
+	   * @param _user The user address for the query.
+	   * @param _poolId The pool ID from which to query bonuses.
+	   * @return The amount of bonuses available to the user for claiming.
+	   */
+	  async queryBonuses(_user, _poolId) {
+	    return await this.contract.queryBonuses(_user, _poolId);
+	  }
+	  /**
+	   * @notice Batch queries the bonus amounts a user can claim from multiple pools.
+	   * @param _user The user address for the queries.
+	   * @param _poolIds An array of pool IDs from which to query bonuses.
+	   * @return An array of bonus amounts available to the user across all specified pools.
+	   */
+	  async batchQueryBonuses(_user, _poolIds) {
+	    return await this.contract.queryBonuses(_user, _poolIds);
+	  }
+	  /**
+	   * @notice Gets the balance of the specified token or ETH within the contract.
+	   * @dev If checking for ETH, supply the zero address.
+	   * @param _token The address of the token contract (zero address for ETH)
+	   * @return The balance of the token or ETH
+	   */
+	  async getBalance(_token) {
+	    return await this.contract.getBalance(_token);
+	  }
+	  setSigner(_signer) {
+	    this.signer = _signer;
+	  }
+	}
+	function getJackpot(chain, address) {
+	  const networkMeta = getNetworkMeta(chain.chainId);
+	  if (!address) address = networkMeta.Jackpot.toLowerCase();
+	  if (!chain.contractmaps[address.toLowerCase()]) {
+	    new Jackpot(chain, address);
+	  }
+	  return chain.contractmaps[address.toLowerCase()];
+	}
+
 	var types$1 = /*#__PURE__*/Object.freeze({
 		__proto__: null
 	});
@@ -57920,7 +58886,9 @@
 		Ticket: Ticket,
 		getTicket: getTicket,
 		LottoNumbers: LottoNumbers,
-		getLottoNumbers: getLottoNumbers
+		getLottoNumbers: getLottoNumbers,
+		Jackpot: Jackpot,
+		getJackpot: getJackpot
 	});
 
 	var types = /*#__PURE__*/Object.freeze({

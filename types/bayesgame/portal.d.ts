@@ -92,9 +92,13 @@ export declare class Portal extends BaseContract {
      */
     treasuryBonusesRate(): Promise<any>;
     /**
-     * Obtains the prize rates.
+     * Obtains the prize rule.
      */
-    getPrizeRates(): Promise<number[]>;
+    getPrizeRule(): Promise<{
+        rates: any;
+        maxs: any;
+        amounts: any;
+    }>;
     /**
      * Checks whether a specific round has expired based on block numbers.
      * @param _round The round number to check.

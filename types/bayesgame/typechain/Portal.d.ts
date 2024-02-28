@@ -10,6 +10,7 @@ interface PortalInterface extends ethers.utils.Interface {
         'batchQueryBonuses(uint256[],uint256[])': FunctionFragment;
         'changeOwner(address)': FunctionFragment;
         'checkKeys(uint8[])': FunctionFragment;
+        'checkOpenRoundKeys(uint8[])': FunctionFragment;
         'checkRound(uint256)': FunctionFragment;
         'claimBonuses(uint256,uint256)': FunctionFragment;
         'config()': FunctionFragment;
@@ -20,7 +21,7 @@ interface PortalInterface extends ethers.utils.Interface {
         'getCodes(uint256,uint256)': FunctionFragment;
         'getFormatCode(uint256)': FunctionFragment;
         'getFormatCodes(uint256,uint256)': FunctionFragment;
-        'getPrizeRates()': FunctionFragment;
+        'getPrizeRule()': FunctionFragment;
         'getRecords(bytes32[])': FunctionFragment;
         'initialize(address)': FunctionFragment;
         'inviterBonusesRate()': FunctionFragment;
@@ -37,6 +38,8 @@ interface PortalInterface extends ethers.utils.Interface {
         'mintKey(uint256,bytes32,uint256,bytes)': FunctionFragment;
         'mintKeys(uint256[],bytes32,uint256,bytes)': FunctionFragment;
         'owner()': FunctionFragment;
+        'prizeAmounts(uint256)': FunctionFragment;
+        'prizeMaxs(uint256)': FunctionFragment;
         'prizeRates(uint256)': FunctionFragment;
         'queryBonuses(uint256,uint256)': FunctionFragment;
         'records(bytes32)': FunctionFragment;
@@ -49,7 +52,7 @@ interface PortalInterface extends ethers.utils.Interface {
         'setEnabled(bool)': FunctionFragment;
         'setKeyPrice(bool,uint256)': FunctionFragment;
         'setMaxMintSize(uint256)': FunctionFragment;
-        'setPrizeRates(uint256[])': FunctionFragment;
+        'setPrizeRule(uint256[],uint256[],uint256[])': FunctionFragment;
         'setRoundExpired(uint256)': FunctionFragment;
         'setSigner(address)': FunctionFragment;
         'setSignerContract(address,bytes32)': FunctionFragment;
@@ -67,6 +70,7 @@ interface PortalInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'batchQueryBonuses', values: [BigNumberish[], BigNumberish[]]): string;
     encodeFunctionData(functionFragment: 'changeOwner', values: [string]): string;
     encodeFunctionData(functionFragment: 'checkKeys', values: [BigNumberish[]]): string;
+    encodeFunctionData(functionFragment: 'checkOpenRoundKeys', values: [BigNumberish[]]): string;
     encodeFunctionData(functionFragment: 'checkRound', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'claimBonuses', values: [BigNumberish, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'config', values?: undefined): string;
@@ -77,7 +81,7 @@ interface PortalInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'getCodes', values: [BigNumberish, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'getFormatCode', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'getFormatCodes', values: [BigNumberish, BigNumberish]): string;
-    encodeFunctionData(functionFragment: 'getPrizeRates', values?: undefined): string;
+    encodeFunctionData(functionFragment: 'getPrizeRule', values?: undefined): string;
     encodeFunctionData(functionFragment: 'getRecords', values: [BytesLike[]]): string;
     encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
     encodeFunctionData(functionFragment: 'inviterBonusesRate', values?: undefined): string;
@@ -94,6 +98,8 @@ interface PortalInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'mintKey', values: [BigNumberish, BytesLike, BigNumberish, BytesLike]): string;
     encodeFunctionData(functionFragment: 'mintKeys', values: [BigNumberish[], BytesLike, BigNumberish, BytesLike]): string;
     encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
+    encodeFunctionData(functionFragment: 'prizeAmounts', values: [BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'prizeMaxs', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'prizeRates', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'queryBonuses', values: [BigNumberish, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'records', values: [BytesLike]): string;
@@ -106,7 +112,7 @@ interface PortalInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'setEnabled', values: [boolean]): string;
     encodeFunctionData(functionFragment: 'setKeyPrice', values: [boolean, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'setMaxMintSize', values: [BigNumberish]): string;
-    encodeFunctionData(functionFragment: 'setPrizeRates', values: [BigNumberish[]]): string;
+    encodeFunctionData(functionFragment: 'setPrizeRule', values: [BigNumberish[], BigNumberish[], BigNumberish[]]): string;
     encodeFunctionData(functionFragment: 'setRoundExpired', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'setSigner', values: [string]): string;
     encodeFunctionData(functionFragment: 'setSignerContract', values: [string, BytesLike]): string;
@@ -123,6 +129,7 @@ interface PortalInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'batchQueryBonuses', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'changeOwner', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'checkKeys', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'checkOpenRoundKeys', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'checkRound', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'claimBonuses', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'config', data: BytesLike): Result;
@@ -133,7 +140,7 @@ interface PortalInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'getCodes', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getFormatCode', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getFormatCodes', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'getPrizeRates', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'getPrizeRule', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'getRecords', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'inviterBonusesRate', data: BytesLike): Result;
@@ -150,6 +157,8 @@ interface PortalInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'mintKey', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'mintKeys', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'prizeAmounts', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'prizeMaxs', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'prizeRates', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'queryBonuses', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'records', data: BytesLike): Result;
@@ -162,7 +171,7 @@ interface PortalInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'setEnabled', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setKeyPrice', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setMaxMintSize', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'setPrizeRates', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'setPrizeRule', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setRoundExpired', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setSigner', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setSignerContract', data: BytesLike): Result;
@@ -183,7 +192,7 @@ interface PortalInterface extends ethers.utils.Interface {
         'MakeTicketLog(address,uint256)': EventFragment;
         'MintKeyLog(bytes32,address,uint8[])': EventFragment;
         'OwnerChanged(address,address,address)': EventFragment;
-        'PrizeRatesLog(uint256[],uint256[])': EventFragment;
+        'PrizeRuleLog(uint256[],uint256[],uint256[])': EventFragment;
         'RegisterLog(bytes32,address,address)': EventFragment;
         'RoundExpiredLog(uint256,uint256)': EventFragment;
     };
@@ -195,7 +204,7 @@ interface PortalInterface extends ethers.utils.Interface {
     getEvent(nameOrSignatureOrTopic: 'MakeTicketLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'MintKeyLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'OwnerChanged'): EventFragment;
-    getEvent(nameOrSignatureOrTopic: 'PrizeRatesLog'): EventFragment;
+    getEvent(nameOrSignatureOrTopic: 'PrizeRuleLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'RegisterLog'): EventFragment;
     getEvent(nameOrSignatureOrTopic: 'RoundExpiredLog'): EventFragment;
 }
@@ -256,6 +265,8 @@ export interface Portal extends Contract {
         }): Promise<ContractTransaction>;
         checkKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<[boolean]>;
         'checkKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<[boolean]>;
+        checkOpenRoundKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<[boolean]>;
+        'checkOpenRoundKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<[boolean]>;
         checkRound(_round: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
         'checkRound(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
         claimBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: Overrides & {
@@ -334,8 +345,24 @@ export interface Portal extends Contract {
             })[];
             blockNumber: BigNumber;
         }>;
-        getPrizeRates(overrides?: CallOverrides): Promise<[BigNumber[]]>;
-        'getPrizeRates()'(overrides?: CallOverrides): Promise<[BigNumber[]]>;
+        getPrizeRule(overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber[],
+            BigNumber[]
+        ] & {
+            rates: BigNumber[];
+            maxs: BigNumber[];
+            amounts: BigNumber[];
+        }>;
+        'getPrizeRule()'(overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber[],
+            BigNumber[]
+        ] & {
+            rates: BigNumber[];
+            maxs: BigNumber[];
+            amounts: BigNumber[];
+        }>;
         getRecords(_sns: BytesLike[], overrides?: CallOverrides): Promise<[BigNumber[]] & {
             result: BigNumber[];
         }>;
@@ -392,6 +419,10 @@ export interface Portal extends Contract {
         }): Promise<ContractTransaction>;
         owner(overrides?: CallOverrides): Promise<[string]>;
         'owner()'(overrides?: CallOverrides): Promise<[string]>;
+        prizeAmounts(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+        'prizeAmounts(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+        prizeMaxs(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+        'prizeMaxs(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
         prizeRates(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
         'prizeRates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
         queryBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<[[BigNumber, BigNumber] & {
@@ -446,10 +477,10 @@ export interface Portal extends Contract {
         'setMaxMintSize(uint256)'(_size: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        setPrizeRates(_rates: BigNumberish[], overrides?: Overrides & {
+        setPrizeRule(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
-        'setPrizeRates(uint256[])'(_rates: BigNumberish[], overrides?: Overrides & {
+        'setPrizeRule(uint256[],uint256[],uint256[])'(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
         setRoundExpired(_expired: BigNumberish, overrides?: Overrides & {
@@ -519,6 +550,8 @@ export interface Portal extends Contract {
     }): Promise<ContractTransaction>;
     checkKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
     'checkKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
+    checkOpenRoundKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
+    'checkOpenRoundKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
     checkRound(_round: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
     'checkRound(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
     claimBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: Overrides & {
@@ -593,8 +626,24 @@ export interface Portal extends Contract {
         })[];
         blockNumber: BigNumber;
     }>;
-    getPrizeRates(overrides?: CallOverrides): Promise<BigNumber[]>;
-    'getPrizeRates()'(overrides?: CallOverrides): Promise<BigNumber[]>;
+    getPrizeRule(overrides?: CallOverrides): Promise<[
+        BigNumber[],
+        BigNumber[],
+        BigNumber[]
+    ] & {
+        rates: BigNumber[];
+        maxs: BigNumber[];
+        amounts: BigNumber[];
+    }>;
+    'getPrizeRule()'(overrides?: CallOverrides): Promise<[
+        BigNumber[],
+        BigNumber[],
+        BigNumber[]
+    ] & {
+        rates: BigNumber[];
+        maxs: BigNumber[];
+        amounts: BigNumber[];
+    }>;
     getRecords(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber[]>;
     'getRecords(bytes32[])'(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber[]>;
     initialize(_currency: string, overrides?: Overrides & {
@@ -647,6 +696,10 @@ export interface Portal extends Contract {
     }): Promise<ContractTransaction>;
     owner(overrides?: CallOverrides): Promise<string>;
     'owner()'(overrides?: CallOverrides): Promise<string>;
+    prizeAmounts(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    'prizeAmounts(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    prizeMaxs(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    'prizeMaxs(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     prizeRates(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     'prizeRates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     queryBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, BigNumber] & {
@@ -701,10 +754,10 @@ export interface Portal extends Contract {
     'setMaxMintSize(uint256)'(_size: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    setPrizeRates(_rates: BigNumberish[], overrides?: Overrides & {
+    setPrizeRule(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
-    'setPrizeRates(uint256[])'(_rates: BigNumberish[], overrides?: Overrides & {
+    'setPrizeRule(uint256[],uint256[],uint256[])'(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
     setRoundExpired(_expired: BigNumberish, overrides?: Overrides & {
@@ -764,6 +817,8 @@ export interface Portal extends Contract {
         'changeOwner(address)'(_user: string, overrides?: CallOverrides): Promise<void>;
         checkKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
         'checkKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
+        checkOpenRoundKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
+        'checkOpenRoundKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<boolean>;
         checkRound(_round: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         'checkRound(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
         claimBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
@@ -834,8 +889,24 @@ export interface Portal extends Contract {
             })[];
             blockNumber: BigNumber;
         }>;
-        getPrizeRates(overrides?: CallOverrides): Promise<BigNumber[]>;
-        'getPrizeRates()'(overrides?: CallOverrides): Promise<BigNumber[]>;
+        getPrizeRule(overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber[],
+            BigNumber[]
+        ] & {
+            rates: BigNumber[];
+            maxs: BigNumber[];
+            amounts: BigNumber[];
+        }>;
+        'getPrizeRule()'(overrides?: CallOverrides): Promise<[
+            BigNumber[],
+            BigNumber[],
+            BigNumber[]
+        ] & {
+            rates: BigNumber[];
+            maxs: BigNumber[];
+            amounts: BigNumber[];
+        }>;
         getRecords(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber[]>;
         'getRecords(bytes32[])'(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber[]>;
         initialize(_currency: string, overrides?: CallOverrides): Promise<void>;
@@ -868,6 +939,10 @@ export interface Portal extends Contract {
         'mintKeys(uint256[],bytes32,uint256,bytes)'(_randoms: BigNumberish[], _sn: BytesLike, _expired: BigNumberish, _signature: BytesLike, overrides?: CallOverrides): Promise<boolean>;
         owner(overrides?: CallOverrides): Promise<string>;
         'owner()'(overrides?: CallOverrides): Promise<string>;
+        prizeAmounts(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'prizeAmounts(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        prizeMaxs(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'prizeMaxs(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         prizeRates(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'prizeRates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         queryBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber, BigNumber] & {
@@ -898,8 +973,8 @@ export interface Portal extends Contract {
         'setKeyPrice(bool,uint256)'(_keyPriceChange: boolean, _keyPriceNext: BigNumberish, overrides?: CallOverrides): Promise<void>;
         setMaxMintSize(_size: BigNumberish, overrides?: CallOverrides): Promise<void>;
         'setMaxMintSize(uint256)'(_size: BigNumberish, overrides?: CallOverrides): Promise<void>;
-        setPrizeRates(_rates: BigNumberish[], overrides?: CallOverrides): Promise<void>;
-        'setPrizeRates(uint256[])'(_rates: BigNumberish[], overrides?: CallOverrides): Promise<void>;
+        setPrizeRule(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: CallOverrides): Promise<void>;
+        'setPrizeRule(uint256[],uint256[],uint256[])'(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: CallOverrides): Promise<void>;
         setRoundExpired(_expired: BigNumberish, overrides?: CallOverrides): Promise<void>;
         'setRoundExpired(uint256)'(_expired: BigNumberish, overrides?: CallOverrides): Promise<void>;
         setSigner(_user: string, overrides?: CallOverrides): Promise<void>;
@@ -977,9 +1052,14 @@ export interface Portal extends Contract {
             _old: string;
             _new: string;
         }>;
-        PrizeRatesLog(oldValue: null, newValue: null): TypedEventFilter<[BigNumber[], BigNumber[]], {
-            oldValue: BigNumber[];
-            newValue: BigNumber[];
+        PrizeRuleLog(rates: null, maxs: null, amounts: null): TypedEventFilter<[
+            BigNumber[],
+            BigNumber[],
+            BigNumber[]
+        ], {
+            rates: BigNumber[];
+            maxs: BigNumber[];
+            amounts: BigNumber[];
         }>;
         RegisterLog(sn: BytesLike | null, user: string | null, inviter: string | null): TypedEventFilter<[string, string, string], {
             sn: string;
@@ -1010,6 +1090,8 @@ export interface Portal extends Contract {
         }): Promise<BigNumber>;
         checkKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
         'checkKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
+        checkOpenRoundKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
+        'checkOpenRoundKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<BigNumber>;
         checkRound(_round: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'checkRound(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         claimBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: Overrides & {
@@ -1034,8 +1116,8 @@ export interface Portal extends Contract {
         'getFormatCode(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         getFormatCodes(_start: BigNumberish, _end: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'getFormatCodes(uint256,uint256)'(_start: BigNumberish, _end: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        getPrizeRates(overrides?: CallOverrides): Promise<BigNumber>;
-        'getPrizeRates()'(overrides?: CallOverrides): Promise<BigNumber>;
+        getPrizeRule(overrides?: CallOverrides): Promise<BigNumber>;
+        'getPrizeRule()'(overrides?: CallOverrides): Promise<BigNumber>;
         getRecords(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber>;
         'getRecords(bytes32[])'(_sns: BytesLike[], overrides?: CallOverrides): Promise<BigNumber>;
         initialize(_currency: string, overrides?: Overrides & {
@@ -1088,6 +1170,10 @@ export interface Portal extends Contract {
         }): Promise<BigNumber>;
         owner(overrides?: CallOverrides): Promise<BigNumber>;
         'owner()'(overrides?: CallOverrides): Promise<BigNumber>;
+        prizeAmounts(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'prizeAmounts(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        prizeMaxs(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'prizeMaxs(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         prizeRates(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'prizeRates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         queryBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
@@ -1136,10 +1222,10 @@ export interface Portal extends Contract {
         'setMaxMintSize(uint256)'(_size: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        setPrizeRates(_rates: BigNumberish[], overrides?: Overrides & {
+        setPrizeRule(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
-        'setPrizeRates(uint256[])'(_rates: BigNumberish[], overrides?: Overrides & {
+        'setPrizeRule(uint256[],uint256[],uint256[])'(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
         setRoundExpired(_expired: BigNumberish, overrides?: Overrides & {
@@ -1204,6 +1290,8 @@ export interface Portal extends Contract {
         }): Promise<PopulatedTransaction>;
         checkKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'checkKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        checkOpenRoundKeys(_keys: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'checkOpenRoundKeys(uint8[])'(_keys: BigNumberish[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         checkRound(_round: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'checkRound(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         claimBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: Overrides & {
@@ -1228,8 +1316,8 @@ export interface Portal extends Contract {
         'getFormatCode(uint256)'(_round: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         getFormatCodes(_start: BigNumberish, _end: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'getFormatCodes(uint256,uint256)'(_start: BigNumberish, _end: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        getPrizeRates(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'getPrizeRates()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        getPrizeRule(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'getPrizeRule()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         getRecords(_sns: BytesLike[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'getRecords(bytes32[])'(_sns: BytesLike[], overrides?: CallOverrides): Promise<PopulatedTransaction>;
         initialize(_currency: string, overrides?: Overrides & {
@@ -1282,6 +1370,10 @@ export interface Portal extends Contract {
         }): Promise<PopulatedTransaction>;
         owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'owner()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        prizeAmounts(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'prizeAmounts(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        prizeMaxs(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'prizeMaxs(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         prizeRates(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'prizeRates(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         queryBonuses(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1330,10 +1422,10 @@ export interface Portal extends Contract {
         'setMaxMintSize(uint256)'(_size: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
-        setPrizeRates(_rates: BigNumberish[], overrides?: Overrides & {
+        setPrizeRule(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
-        'setPrizeRates(uint256[])'(_rates: BigNumberish[], overrides?: Overrides & {
+        'setPrizeRule(uint256[],uint256[],uint256[])'(_rates: BigNumberish[], _maxs: BigNumberish[], _amounts: BigNumberish[], overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
         setRoundExpired(_expired: BigNumberish, overrides?: Overrides & {
