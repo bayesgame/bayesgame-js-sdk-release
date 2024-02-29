@@ -14,6 +14,7 @@ export declare class Chain {
     setProvider(providerOrSigner: ProviderOrSigner): void;
     setOutProvider(provider_: any): void;
     register(contract: BaseContract): void;
+    getContract(address: string): BaseContract;
     clean(): void;
     connectContract(signer?: Signer): void;
     zeroSymbol(): string;

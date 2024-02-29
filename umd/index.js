@@ -35461,7 +35461,10 @@
 	  }
 	  register(contract) {
 	    this.contracts.push(contract);
-	    this.contractmaps[contract.address] = contract;
+	    this.contractmaps[contract.address + this.chainId] = contract;
+	  }
+	  getContract(address) {
+	    return this.contractmaps[address.toLowerCase() + this.chainId];
 	  }
 	  clean() {
 	    this.contracts.splice(0, this.contracts.length);
@@ -53199,10 +53202,10 @@
 	  }
 	}
 	function getERC20(chain, address) {
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new ERC20(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	const ERC721ABI = [{
@@ -53552,10 +53555,10 @@
 	  }
 	}
 	function getERC721(chain, address) {
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new ERC721(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	const ERC1155ABI = [{
@@ -53914,10 +53917,10 @@
 	  }
 	}
 	function getERC1155(chain, address) {
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new ERC1155(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	const IERC165ABI = [{
@@ -56121,10 +56124,10 @@
 	function getPortal(chain, address) {
 	  const networkMeta = getNetworkMeta(chain.chainId);
 	  if (!address) address = networkMeta.Portal.toLowerCase();
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new Portal(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	var TicketABI = [
@@ -57106,10 +57109,10 @@
 	function getTicket(chain, address) {
 	  const networkMeta = getNetworkMeta(chain.chainId);
 	  if (!address) address = networkMeta.Ticket.toLowerCase();
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new Ticket(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	var LottoNumbersABI = [
@@ -57992,10 +57995,10 @@
 	function getLottoNumbers(chain, address) {
 	  const networkMeta = getNetworkMeta(chain.chainId);
 	  if (!address) address = networkMeta.LottoNumbers.toLowerCase();
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new LottoNumbers(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	var JackpotABI = [
@@ -58867,10 +58870,10 @@
 	function getJackpot(chain, address) {
 	  const networkMeta = getNetworkMeta(chain.chainId);
 	  if (!address) address = networkMeta.Jackpot.toLowerCase();
-	  if (!chain.contractmaps[address.toLowerCase()]) {
+	  if (!chain.getContract(address)) {
 	    new Jackpot(chain, address);
 	  }
-	  return chain.contractmaps[address.toLowerCase()];
+	  return chain.getContract(address);
 	}
 
 	var types$1 = /*#__PURE__*/Object.freeze({
