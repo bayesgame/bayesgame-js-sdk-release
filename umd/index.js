@@ -62205,6 +62205,7 @@
 	exports.ERC165 = ERC165;
 	exports.ERC20 = ERC20;
 	exports.ERC721 = ERC721;
+	exports.Jackpot = Jackpot;
 	exports.LocalChain = LocalChain;
 	exports.LocalWallet = LocalWallet;
 	exports.LottoNumbers = LottoNumbers;
@@ -62220,6 +62221,7 @@
 	exports.getERC165 = getERC165;
 	exports.getERC20 = getERC20;
 	exports.getERC721 = getERC721;
+	exports.getJackpot = getJackpot;
 	exports.getLottoNumbers = getLottoNumbers;
 	exports.getPortal = getPortal;
 	exports.getTicket = getTicket;

@@ -5,7 +5,7 @@ export { ERC721, getERC721 } from './erc721';
 export { ERC1155, getERC1155 } from './erc1155';
 export { ERC165, getERC165 } from './erc165';
 export { WETH9 } from './weth9';
-export { Portal, getPortal, LottoNumbers, getLottoNumbers, Ticket, getTicket } from './bayesgame';
+export { Portal, getPortal, Jackpot, getJackpot, LottoNumbers, getLottoNumbers, Ticket, getTicket } from './bayesgame';
 import * as common from './common';
 import * as constants from './constants';
 import * as multicall from './multicall';
