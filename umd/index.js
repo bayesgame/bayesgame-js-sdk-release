@@ -58836,6 +58836,14 @@
 	    return await this.contract.batchQueryClearing(_rounds, _tokenIds);
 	  }
 	  /**
+	   * @notice Queries the bonus amount for a specific pool.
+	   * @param _poolId The pool ID from which to query bonuses.
+	   * @return The amount of bonuses for a specific pool.
+	   */
+	  async poolsBonuses(_poolId) {
+	    return await this.contract.poolsBonuses(_poolId);
+	  }
+	  /**
 	   * @notice Queries the bonus amount a user can claim from a specific pool.
 	   * @dev Calculates the user's share of the pool based on the number of tickets they hold.
 	   * @param _user The user address for the query.

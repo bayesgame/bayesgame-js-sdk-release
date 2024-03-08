@@ -60,6 +60,12 @@ export declare class Jackpot extends BaseContract {
      */
     batchQueryClearing(_rounds: BigNumberish[], _tokenIds: BigNumberish[]): Promise<any>;
     /**
+     * @notice Queries the bonus amount for a specific pool.
+     * @param _poolId The pool ID from which to query bonuses.
+     * @return The amount of bonuses for a specific pool.
+     */
+    poolsBonuses(_poolId: BigNumberish): Promise<any>;
+    /**
      * @notice Queries the bonus amount a user can claim from a specific pool.
      * @dev Calculates the user's share of the pool based on the number of tickets they hold.
      * @param _user The user address for the query.
