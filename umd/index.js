@@ -58798,14 +58798,22 @@
 	   * @param _poolId The ID of the pool from which to claim bonuses.
 	   */
 	  claimBonuses(_poolId) {
-	    return getTransactionMethods(this.contract, 'claimBonuses', [_poolId]);
+	    let value = lib$v.BigNumber.from(0);
+	    const payableOverrides = {
+	      value
+	    };
+	    return getTransactionMethods(this.contract, 'claimBonuses', [_poolId, payableOverrides]);
 	  }
 	  /**
 	   * @notice Allows a user to batch claim bonuses from multiple pools.
 	   * @param _poolIds An array of pool IDs from which to claim bonuses.
 	   */
 	  batchClaimBonuses(_poolIds) {
-	    return getTransactionMethods(this.contract, 'batchClaimBonuses', [_poolIds]);
+	    let value = lib$v.BigNumber.from(0);
+	    const payableOverrides = {
+	      value
+	    };
+	    return getTransactionMethods(this.contract, 'batchClaimBonuses', [_poolIds, payableOverrides]);
 	  }
 	  // Gets the current pool
 	  async totalPool() {
