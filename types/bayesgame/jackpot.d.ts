@@ -81,6 +81,17 @@ export declare class Jackpot extends BaseContract {
      */
     batchQueryBonuses(_user: string, _poolIds: BigNumberish[]): Promise<any>;
     /**
+     * @notice Retrieves detailed information about the bonuses a user is eligible to claim from a specific pool.
+     * @param _user The address of the user for whom the bonus information is being queried.
+     * @param _poolId The identifier of the bonus pool from which the user's bonus information is being retrieved.
+     * @return poolBonuses The total amount of bonuses that have been deposited into the specified pool.
+     * @return clearingFee The clearing fee that have already been claimed by all users from the specified pool, deducted from the total pool bonuses.
+     * @return userTicketAmount The number of tickets the specified user holds in the given pool, which is used to determine their share of the bonuses.
+     * @return poolTicketAmount The total number of tickets issued in the specified pool, which is used to calculate each user's proportional share.
+     * @return userBonuses The calculated bonuses that the user is entitled to based on their tickets versus the total tickets in the pool.
+     */
+    queryUserBonusesDetail(_user: string, _poolId: BigNumberish): Promise<any>;
+    /**
      * @notice Gets the balance of the specified token or ETH within the contract.
      * @dev If checking for ETH, supply the zero address.
      * @param _token The address of the token contract (zero address for ETH)

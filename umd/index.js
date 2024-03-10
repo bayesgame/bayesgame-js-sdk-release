@@ -54308,7 +54308,7 @@
 	  Portal: '0x80428c637Bc4498CaB45a675C4E6018EC67198E6',
 	  LottoNumbers: '0x4De3256041a7F839a35046a904b1AED611eB51A8',
 	  Ticket: '0x1710782a58C067DE0811a3cE4dD7f3B9c5ac5539',
-	  Jackpot: '0x1ED6B168E855D8dF1c5FCF2FC2F0eF8d561eff3C'
+	  Jackpot: '0xC8DBbdD4e5D72c1eA76085B4Ed44374E46F90C21'
 	};
 	const getNetworkMeta = network => {
 	  switch (network) {
@@ -54319,7 +54319,7 @@
 	        Portal: '0x9033AD3737bE8f2e3A315ba16184230aD98eda2D',
 	        LottoNumbers: '0x14F339A5FF579EAdD48c0913B845287011e4c250',
 	        Ticket: '0x80428c637Bc4498CaB45a675C4E6018EC67198E6',
-	        Jackpot: '0x1710782a58C067DE0811a3cE4dD7f3B9c5ac5539'
+	        Jackpot: '0xC8DBbdD4e5D72c1eA76085B4Ed44374E46F90C21'
 	      };
 	    case 5:
 	      return defaultConf;
@@ -58647,6 +58647,50 @@
 		{
 			inputs: [
 				{
+					internalType: "address",
+					name: "_user",
+					type: "address"
+				},
+				{
+					internalType: "uint256",
+					name: "_poolId",
+					type: "uint256"
+				}
+			],
+			name: "queryUserBonusesDetail",
+			outputs: [
+				{
+					internalType: "uint256",
+					name: "poolBonuses",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "clearingFee",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "userTicketAmount",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "poolTicketAmount",
+					type: "uint256"
+				},
+				{
+					internalType: "uint256",
+					name: "userBonuses",
+					type: "uint256"
+				}
+			],
+			stateMutability: "view",
+			type: "function"
+		},
+		{
+			inputs: [
+				{
 					internalType: "uint256",
 					name: "_rate",
 					type: "uint256"
@@ -58737,7 +58781,7 @@
 					type: "uint256"
 				}
 			],
-			name: "usersTitcketAmount",
+			name: "usersTicketAmount",
 			outputs: [
 				{
 					internalType: "uint256",
@@ -58869,6 +58913,19 @@
 	   */
 	  async batchQueryBonuses(_user, _poolIds) {
 	    return await this.contract.queryBonuses(_user, _poolIds);
+	  }
+	  /**
+	   * @notice Retrieves detailed information about the bonuses a user is eligible to claim from a specific pool.
+	   * @param _user The address of the user for whom the bonus information is being queried.
+	   * @param _poolId The identifier of the bonus pool from which the user's bonus information is being retrieved.
+	   * @return poolBonuses The total amount of bonuses that have been deposited into the specified pool.
+	   * @return clearingFee The clearing fee that have already been claimed by all users from the specified pool, deducted from the total pool bonuses.
+	   * @return userTicketAmount The number of tickets the specified user holds in the given pool, which is used to determine their share of the bonuses.
+	   * @return poolTicketAmount The total number of tickets issued in the specified pool, which is used to calculate each user's proportional share.
+	   * @return userBonuses The calculated bonuses that the user is entitled to based on their tickets versus the total tickets in the pool.
+	   */
+	  async queryUserBonusesDetail(_user, _poolId) {
+	    return await this.contract.queryUserBonusesDetail(_user, _poolId);
 	  }
 	  /**
 	   * @notice Gets the balance of the specified token or ETH within the contract.

@@ -29,12 +29,13 @@ interface JackpotInterface extends ethers.utils.Interface {
         'portal()': FunctionFragment;
         'queryBonuses(address,uint256)': FunctionFragment;
         'queryClearing(uint256,uint256)': FunctionFragment;
+        'queryUserBonusesDetail(address,uint256)': FunctionFragment;
         'setClearingFeeRate(uint256)': FunctionFragment;
         'setEnabled(bool)': FunctionFragment;
         'setupConfig(address)': FunctionFragment;
         'totalPool()': FunctionFragment;
         'usersClaimedAmount(address,uint256)': FunctionFragment;
-        'usersTitcketAmount(address,uint256)': FunctionFragment;
+        'usersTicketAmount(address,uint256)': FunctionFragment;
     };
     encodeFunctionData(functionFragment: 'admin', values?: undefined): string;
     encodeFunctionData(functionFragment: 'batchClaimBonuses', values: [BigNumberish[]]): string;
@@ -60,12 +61,13 @@ interface JackpotInterface extends ethers.utils.Interface {
     encodeFunctionData(functionFragment: 'portal', values?: undefined): string;
     encodeFunctionData(functionFragment: 'queryBonuses', values: [string, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'queryClearing', values: [BigNumberish, BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'queryUserBonusesDetail', values: [string, BigNumberish]): string;
     encodeFunctionData(functionFragment: 'setClearingFeeRate', values: [BigNumberish]): string;
     encodeFunctionData(functionFragment: 'setEnabled', values: [boolean]): string;
     encodeFunctionData(functionFragment: 'setupConfig', values: [string]): string;
     encodeFunctionData(functionFragment: 'totalPool', values?: undefined): string;
     encodeFunctionData(functionFragment: 'usersClaimedAmount', values: [string, BigNumberish]): string;
-    encodeFunctionData(functionFragment: 'usersTitcketAmount', values: [string, BigNumberish]): string;
+    encodeFunctionData(functionFragment: 'usersTicketAmount', values: [string, BigNumberish]): string;
     decodeFunctionResult(functionFragment: 'admin', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'batchClaimBonuses', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'batchJoin', data: BytesLike): Result;
@@ -90,12 +92,13 @@ interface JackpotInterface extends ethers.utils.Interface {
     decodeFunctionResult(functionFragment: 'portal', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'queryBonuses', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'queryClearing', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'queryUserBonusesDetail', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setClearingFeeRate', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setEnabled', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'setupConfig', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'totalPool', data: BytesLike): Result;
     decodeFunctionResult(functionFragment: 'usersClaimedAmount', data: BytesLike): Result;
-    decodeFunctionResult(functionFragment: 'usersTitcketAmount', data: BytesLike): Result;
+    decodeFunctionResult(functionFragment: 'usersTicketAmount', data: BytesLike): Result;
     events: {
         'ClaimBonusesLog(uint256,address,uint256)': EventFragment;
         'ClearingFeeRateLog(uint256,uint256)': EventFragment;
@@ -240,6 +243,32 @@ export interface Jackpot extends Contract {
                 usersBonuses: BigNumber;
             }
         ]>;
+        queryUserBonusesDetail(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber
+        ] & {
+            poolBonuses: BigNumber;
+            clearingFee: BigNumber;
+            userTicketAmount: BigNumber;
+            poolTicketAmount: BigNumber;
+            userBonuses: BigNumber;
+        }>;
+        'queryUserBonusesDetail(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber
+        ] & {
+            poolBonuses: BigNumber;
+            clearingFee: BigNumber;
+            userTicketAmount: BigNumber;
+            poolTicketAmount: BigNumber;
+            userBonuses: BigNumber;
+        }>;
         setClearingFeeRate(_rate: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<ContractTransaction>;
@@ -262,8 +291,8 @@ export interface Jackpot extends Contract {
         'totalPool()'(overrides?: CallOverrides): Promise<[BigNumber]>;
         usersClaimedAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
         'usersClaimedAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
-        usersTitcketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
-        'usersTitcketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+        usersTicketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+        'usersTicketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
     };
     admin(overrides?: CallOverrides): Promise<string>;
     'admin()'(overrides?: CallOverrides): Promise<string>;
@@ -361,6 +390,32 @@ export interface Jackpot extends Contract {
         clearingFee: BigNumber;
         usersBonuses: BigNumber;
     }>;
+    queryUserBonusesDetail(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber
+    ] & {
+        poolBonuses: BigNumber;
+        clearingFee: BigNumber;
+        userTicketAmount: BigNumber;
+        poolTicketAmount: BigNumber;
+        userBonuses: BigNumber;
+    }>;
+    'queryUserBonusesDetail(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber
+    ] & {
+        poolBonuses: BigNumber;
+        clearingFee: BigNumber;
+        userTicketAmount: BigNumber;
+        poolTicketAmount: BigNumber;
+        userBonuses: BigNumber;
+    }>;
     setClearingFeeRate(_rate: BigNumberish, overrides?: Overrides & {
         from?: string | Promise<string>;
     }): Promise<ContractTransaction>;
@@ -383,8 +438,8 @@ export interface Jackpot extends Contract {
     'totalPool()'(overrides?: CallOverrides): Promise<BigNumber>;
     usersClaimedAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     'usersClaimedAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-    usersTitcketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-    'usersTitcketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    usersTicketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    'usersTicketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     callStatic: {
         admin(overrides?: CallOverrides): Promise<string>;
         'admin()'(overrides?: CallOverrides): Promise<string>;
@@ -458,6 +513,32 @@ export interface Jackpot extends Contract {
             clearingFee: BigNumber;
             usersBonuses: BigNumber;
         }>;
+        queryUserBonusesDetail(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber
+        ] & {
+            poolBonuses: BigNumber;
+            clearingFee: BigNumber;
+            userTicketAmount: BigNumber;
+            poolTicketAmount: BigNumber;
+            userBonuses: BigNumber;
+        }>;
+        'queryUserBonusesDetail(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<[
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber,
+            BigNumber
+        ] & {
+            poolBonuses: BigNumber;
+            clearingFee: BigNumber;
+            userTicketAmount: BigNumber;
+            poolTicketAmount: BigNumber;
+            userBonuses: BigNumber;
+        }>;
         setClearingFeeRate(_rate: BigNumberish, overrides?: CallOverrides): Promise<void>;
         'setClearingFeeRate(uint256)'(_rate: BigNumberish, overrides?: CallOverrides): Promise<void>;
         setEnabled(_enabled: boolean, overrides?: CallOverrides): Promise<void>;
@@ -468,8 +549,8 @@ export interface Jackpot extends Contract {
         'totalPool()'(overrides?: CallOverrides): Promise<BigNumber>;
         usersClaimedAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'usersClaimedAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        usersTitcketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        'usersTitcketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        usersTicketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'usersTicketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     };
     filters: {
         ClaimBonusesLog(poolId: BigNumberish | null, user: string | null, userAmount: BigNumberish | null): TypedEventFilter<[BigNumber, string, BigNumber], {
@@ -597,6 +678,8 @@ export interface Jackpot extends Contract {
         'queryBonuses(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         queryClearing(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'queryClearing(uint256,uint256)'(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        queryUserBonusesDetail(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'queryUserBonusesDetail(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         setClearingFeeRate(_rate: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<BigNumber>;
@@ -619,8 +702,8 @@ export interface Jackpot extends Contract {
         'totalPool()'(overrides?: CallOverrides): Promise<BigNumber>;
         usersClaimedAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
         'usersClaimedAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        usersTitcketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-        'usersTitcketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        usersTicketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+        'usersTicketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
     };
     populateTransaction: {
         admin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -707,6 +790,8 @@ export interface Jackpot extends Contract {
         'queryBonuses(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         queryClearing(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'queryClearing(uint256,uint256)'(_round: BigNumberish, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        queryUserBonusesDetail(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'queryUserBonusesDetail(address,uint256)'(_user: string, _poolId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         setClearingFeeRate(_rate: BigNumberish, overrides?: Overrides & {
             from?: string | Promise<string>;
         }): Promise<PopulatedTransaction>;
@@ -729,8 +814,8 @@ export interface Jackpot extends Contract {
         'totalPool()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
         usersClaimedAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
         'usersClaimedAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        usersTitcketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
-        'usersTitcketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        usersTicketAmount(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+        'usersTicketAmount(address,uint256)'(arg0: string, arg1: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
     };
 }
 export {};
