@@ -35599,7 +35599,7 @@
 	    super();
 	    if (!rpc) rpc = CHAIN_RPC[chainId];
 	    console.log('chain rpc', rpc);
-	    const provider = new lib$v.ethers.providers.JsonRpcProvider(CHAIN_RPC[chainId]);
+	    const provider = new lib$v.ethers.providers.JsonRpcProvider(rpc);
 	    this.setProvider(provider);
 	    this.chainId = chainId;
 	    // workaroud, unknown account #0 (operation="getAddress", code=UNSUPPORTED_OPERATION, version=providers/5.7.2)
