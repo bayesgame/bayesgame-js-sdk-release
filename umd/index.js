@@ -48904,13 +48904,11 @@
 			     *
 			     * @author Dan Kogai (https://github.com/dankogai)
 			     */
-			    var version = '3.7.6';
+			    var version = '3.7.7';
 			    /**
 			     * @deprecated use lowercase `version`.
 			     */
 			    var VERSION = version;
-			    var _hasatob = typeof atob === 'function';
-			    var _hasbtoa = typeof btoa === 'function';
 			    var _hasBuffer = typeof Buffer === 'function';
 			    var _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
 			    var _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
@@ -48954,7 +48952,7 @@
 			     * @param {String} bin binary string
 			     * @returns {string} Base64-encoded string
 			     */
-			    var _btoa = _hasbtoa ? function (bin) { return btoa(bin); }
+			    var _btoa = typeof btoa === 'function' ? function (bin) { return btoa(bin); }
 			        : _hasBuffer ? function (bin) { return Buffer.from(bin, 'binary').toString('base64'); }
 			            : btoaPolyfill;
 			    var _fromUint8Array = _hasBuffer
@@ -49083,7 +49081,7 @@
 			     * @param {String} asc Base64-encoded string
 			     * @returns {string} binary string
 			     */
-			    var _atob = _hasatob ? function (asc) { return atob(_tidyB64(asc)); }
+			    var _atob = typeof atob === 'function' ? function (asc) { return atob(_tidyB64(asc)); }
 			        : _hasBuffer ? function (asc) { return Buffer.from(asc, 'base64').toString('binary'); }
 			            : atobPolyfill;
 			    //
@@ -54320,6 +54318,15 @@
 	        LottoNumbers: '0x14F339A5FF579EAdD48c0913B845287011e4c250',
 	        Ticket: '0x80428c637Bc4498CaB45a675C4E6018EC67198E6',
 	        Jackpot: '0xC8DBbdD4e5D72c1eA76085B4Ed44374E46F90C21'
+	      };
+	    case 97:
+	      return {
+	        id: network,
+	        rpcUrl: CHAIN_RPC[network],
+	        Portal: '0x1a67530cFE28B6F991f444F67AD5A91694cd8Ab5',
+	        LottoNumbers: '0x80cc507bF1e8cFe5750b7e50d2bfadC44cFBb178',
+	        Ticket: '0x4225F69766A05d58992DA7659B6Ea11FdaCeE61E',
+	        Jackpot: '0x9143bE564d555D2D185e66A41eB2782ee43c05C2'
 	      };
 	    case 5:
 	      return defaultConf;
