@@ -31,7 +31,7 @@ export declare class Chain {
     getBlockNumber(): Promise<any>;
     getBlock(blockTag: string | number): Promise<any>;
     getGasPrice(): Promise<any>;
-    setGasPrice(rate?: number): Promise<void>;
+    setGasPrice(gasPrice: BigNumberish): Promise<void>;
     estimateGas(transaction: TransactionRequest): Promise<string>;
     getBalance(address?: string): Promise<string>;
     getTransactionReceipt(transactionHash: any): Promise<any>;

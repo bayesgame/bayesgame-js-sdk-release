@@ -35529,12 +35529,8 @@
 	    const res = await provider.getGasPrice();
 	    return res.toString();
 	  }
-	  async setGasPrice() {
-	    let rate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1.2;
-	    const provider = this.getProvider();
-	    if (!provider) throw new Error('no provider');
-	    const res = await provider.getGasPrice();
-	    this.gasPrice = res.mul(rate);
+	  async setGasPrice(gasPrice) {
+	    this.gasPrice = gasPrice;
 	  }
 	  async estimateGas(transaction) {
 	    let gasLimit = await this.getSigner(0).estimateGas(transaction);
