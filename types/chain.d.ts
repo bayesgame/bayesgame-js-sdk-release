@@ -1,4 +1,4 @@
-import { ethers, Wallet } from 'ethers';
+import { ethers, Wallet, BigNumberish } from 'ethers';
 import { Filter } from '@ethersproject/abstract-provider';
 import { BaseContract } from './contract';
 import type { Signer, TypedTokenInfo, TypedDataDomain, TypedDataField, TransactionRequest } from './common/types';
@@ -11,6 +11,7 @@ export declare class Chain {
     contractmaps: Record<string, BaseContract>;
     tokens: Record<string, TypedTokenInfo>;
     cache: boolean;
+    gasPrice: BigNumberish;
     setProvider(providerOrSigner: ProviderOrSigner): void;
     setOutProvider(provider_: any): void;
     register(contract: BaseContract): void;
@@ -30,6 +31,7 @@ export declare class Chain {
     getBlockNumber(): Promise<any>;
     getBlock(blockTag: string | number): Promise<any>;
     getGasPrice(): Promise<any>;
+    setGasPrice(rate?: number): Promise<void>;
     estimateGas(transaction: TransactionRequest): Promise<string>;
     getBalance(address?: string): Promise<string>;
     getTransactionReceipt(transactionHash: any): Promise<any>;
